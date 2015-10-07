@@ -1,28 +1,36 @@
- form[name=xlpl_status_table] .ilTableOuter {
+div.ilTableHeaderTitle {
+	padding-top: 0 !important;
+}
+
+form[name=xlpl_status_table] .ilTableOuter {
 	 border: none !important;
 }
 
- form[name=xlpl_status_table] div.ilTableOuter table.fullwidth {
-	 background: none !important;
- }
+form[name=xlpl_status_table] div.ilTableOuter table.fullwidth {
+	background: none !important;
+}
 
- form[name=xlpl_status_table] .title_line td {
-	 padding: 20px 0 7px 0;
- }
+form[name=xlpl_status_table] .title_line td {
+	padding: 20px 0 7px 0;
+}
 
- form[name=xlpl_status_table] .status_user {
-	 font-weight: bold;
- }
+form[name=xlpl_status_table] .status_user {
+	font-weight: bold;
+}
 
- form[name=xlpl_status_table] .status_last_login {
-	 float: right;
- }
+form[name=xlpl_status_table] .status_last_login {
+	float: right;
+}
 
- form[name=xlpl_status_table] .status_line {
+form[name=xlpl_status_table] .status_line {
+	background: #d3d3d3;
+}
+
+form[name=xlpl_status_table] .status_list_entry {
+	border-top: 1px solid darkgray;
+	border-bottom: 1px solid darkgray;
+}
+
+form[name=xlpl_status_table] .status_list_entry.odd {
 	background: #ededed;
- }
-
- form[name=xlpl_status_table] .status_list_entry {
-	 border-top: 1px solid darkgray;
-	 border-bottom: 1px solid darkgray;
- }
+}

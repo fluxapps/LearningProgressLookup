@@ -65,7 +65,6 @@ class srLearningProgressLookupCourseTableGUI extends ilTable2GUI {
 
 		$this->setShowRowsSelector(false);
 
-
 		$this->setEnableTitle(true);
 		$this->setDisableFilterHiding(true);
 		$this->setEnableNumInfo(true);

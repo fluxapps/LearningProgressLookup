@@ -32,7 +32,7 @@ class srLearningProgressLookupStatusTableGUI extends ilTable2GUI {
 	protected  $show_default_filter = false;
 
 	/** @var array  */
-	protected  $numeric_fields = array("course_id");
+	protected  $numeric_fields = array("");
 
 
 	/**
@@ -55,7 +55,6 @@ class srLearningProgressLookupStatusTableGUI extends ilTable2GUI {
 		}
 
 		$this->setPrefix('sr_xlpl_status_');
-		//$this->setFormName('xlpl_status_table');
 		$this->setId('xlpl_status');
 
 		parent::__construct($parent_obj, $parent_cmd, '');
@@ -127,7 +126,7 @@ class srLearningProgressLookupStatusTableGUI extends ilTable2GUI {
 			$row = array();
 			$row = $courseRecord;
 
-			$row['course_status'] = srLearningProgressLookupModel::getProgressStatusRepresentation($courseRecord['offline']);
+			//$row['course_status'] = srLearningProgressLookupModel::getProgressStatusRepresentation($courseRecord['offline']);
 			$row['modules'] = $module_data;
 			$row['user_progresses'] = $module_status_data[$row['usr_id']];
 			$rows[] = $row;
@@ -148,7 +147,7 @@ class srLearningProgressLookupStatusTableGUI extends ilTable2GUI {
 		$offline_item = new ilCheckboxInputGUI($this->pl->txt('filter_label_offline'), 'offline');
 		$this->addFilterItem($offline_item);
 		$offline_item->readFromSession();
-		$this->filter['offline'] = $offline_item->getValue();
+		$this->filter['offline'] = $offline_item->getChecked();
 	}
 
 
@@ -235,7 +234,7 @@ class srLearningProgressLookupStatusTableGUI extends ilTable2GUI {
 			foreach ($a_set['modules'] as $key => $module) {
 				$this->tpl->setCurrentBlock('module_tr');
 				$css_class = "status_list_entry ";
-				$css_class .= ($odd) ? "odd" : "event";
+				$css_class .= ($odd) ? "odd" : "even";
 				$this->tpl->setVariable('CSS_CLASS', $css_class);
 
 				$this->tpl->setVariable('COURSE', "<img src='" . $module['icon'] . "' /> " . $module['title']);
@@ -252,8 +251,6 @@ class srLearningProgressLookupStatusTableGUI extends ilTable2GUI {
 			$this->tpl->setVariable('COURSE', $this->pl->txt('no_modules_with_permission'));
 			$this->tpl->parseCurrentBlock();
 		}
-
-		//$this->tpl->setVariable('ACTIONS', '&nbsp;');
 	}
 
 

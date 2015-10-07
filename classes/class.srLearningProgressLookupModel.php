@@ -44,6 +44,12 @@ class srLearningProgressLookupModel {
 			unset($options['filters']['course_title']);
 		}
 
+		// fix for correct field name
+		if(isset($options['sort']['field']) && $options['sort']['field'] == 'course_title') {
+			$options['sort']['field'] = 'obj.title';
+			unset($options['filters']['course_title']);
+		}
+
 		$sql .= self::parseWhereQuery($options['filters']);
 		$sql .= self::parseDefaultQueryOptions($options);
 
@@ -69,7 +75,7 @@ class srLearningProgressLookupModel {
 		$options = self::mergeDefaultOptions($options);
 
 		if ($options['count']) {
-			$sql = 'SELECT COUNT(obj_members.usr_id),';
+			$sql = 'SELECT COUNT(obj_members.usr_id) as count,';
 		} else {
 			$sql = 'SELECT obj_members.usr_id, ';
 		}
@@ -103,7 +109,7 @@ class srLearningProgressLookupModel {
 
 		$options = self::mergeDefaultOptions($options);
 
-		$modules = self::getCourseModules($course_ref_id);
+		$modules = self::getCourseModules($course_ref_id, $options);
 		$module_obj_ids = array_map(function ($ar) {return $ar['obj_id'];}, $modules);
 
 		$sql = "SELECT usr_id, obj_id, status FROM ut_lp_marks".
@@ -118,11 +124,18 @@ class srLearningProgressLookupModel {
 		return $res;
 	}
 
-	public static function getCourseModules($course_ref_id, $show_offline = true) {
+	public static function getCourseModules($course_ref_id, array $options = array()) {
 		global $ilDB, $rbacsystem;
 
 		if(isset(self::$module_cache[$course_ref_id])) {
 			return self::$module_cache[$course_ref_id];
+		}
+
+		$options = self::mergeDefaultOptions($options);
+
+		$show_offline = false;
+		if(isset($options['filters']['offline']) && $options['filters']['offline'] == 1) {
+			$show_offline = true;
 		}
 
 		$obj_id = ilObject::_lookupObjId($course_ref_id);
@@ -140,7 +153,7 @@ class srLearningProgressLookupModel {
 			}
 
 			// check if offline show is enabled and user has lp-other-users right
-			if((!$show_offline && !$online) || !$rbacsystem->checkAccess("lp_other_users", $object->getRefId())) {
+			if(!$show_offline && !$online || !$rbacsystem->checkAccess("lp_other_users", $object->getRefId())) {
 				continue;
 			}
 
@@ -201,12 +214,12 @@ class srLearningProgressLookupModel {
 
 	public static function parseDefaultQueryOptions($options) {
 		$sql = "";
-		if (isset($options['limit']['start']) && isset($options['limit']['end'])) {
-			$sql .= " LIMIT ".$options['limit']['start'].", ".$options['limit']['end'];
-		}
-
 		if (isset($options['sort']['field']) && isset($options['sort']['direction'])) {
 			$sql .= " ORDER BY ".$options['sort']['field']." ".$options['sort']['direction'];
+		}
+
+		if (isset($options['limit']['start']) && isset($options['limit']['end'])) {
+			$sql .= " LIMIT ".$options['limit']['start'].", ".$options['limit']['end'];
 		}
 
 		return $sql;

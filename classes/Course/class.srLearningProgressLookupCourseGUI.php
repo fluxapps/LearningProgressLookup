@@ -63,6 +63,7 @@ class srLearningProgressLookupCourseGUI {
 		$this->checkAccessOrFail();
 
 		$this->tpl->getStandardTemplate();
+		//$this->tabs->addTab("course_gui", $this->pl->txt('title_search_course'), $this->ctrl->getLinkTarget($this));
 
 		switch ($cmd) {
 			case self::CMD_RESET_FILTER:

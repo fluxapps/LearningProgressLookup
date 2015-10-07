@@ -12,13 +12,13 @@ online_status_1#:#Online
 table_label_action#:#Action
 table_label_lookup#:#Lookup
 
-title_search_users#:#Search Users on Course "%s"
+title_search_users#:#Search Users in Course "%s"
 back_to_course_search#:#Back to Course Search
 course_title#:#Title
 status_title#:#Status
 filter_label_login#:#Login
 filter_label_offline#:#Include Offline Modules
-no_modules_with_permission#:#No Modules available
+no_modules_with_permission#:#No Course Modules available
 
 user_status_line#:#User: %s (%s %s)
 user_last_login_line#:#Last Login: %s

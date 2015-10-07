@@ -74,8 +74,9 @@ class srLearningProgressLookupStatusGUI {
 		$this->ctrl->saveParameter($this, 'ref_id');
 
 		$this->tpl->getStandardTemplate();
+
 		/*$this->tabs->clearTargets();
-		$this->tabs->tabs = null;*/
+		$this->tabs->addTab("status_gui", sprintf($this->pl->txt('title_search_users'), ilObject::_lookupTitle(ilObject::_lookupObjectId($this->ref_id))), $this->ctrl->getLinkTarget($this));*/
 		$this->tabs->setBackTarget($this->pl->txt('back_to_course_search'), $this->ctrl->getLinkTargetByClass(array('illearningprogresslookupgui', 'srlearningprogresslookupcoursegui')));
 
 		switch ($cmd) {
