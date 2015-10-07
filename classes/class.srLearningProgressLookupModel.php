@@ -124,13 +124,34 @@ class srLearningProgressLookupModel {
 			$show_offline = true;
 		}
 
-		$obj_id = ilObject::_lookupObjId($course_ref_id);
+		$data = self::findCourseModules($course_ref_id, $show_offline);
+
+		// sort alphabetic
+		usort($data, function($a, $b) {
+			return strcmp($a['title'], $b['title']);
+		});
+
+		self::$module_cache[$course_ref_id] = $data;
+		return self::$module_cache[$course_ref_id];
+	}
+
+	public static function findCourseModules($ref_id, $show_offline) {
+		global $rbacsystem;
+
+		$obj_id = ilObject::_lookupObjId($ref_id);
 		$collection = new ilLPCollections($obj_id);
-		$items = ilLPCollections::_getPossibleItems($course_ref_id, $collection);
+		$items = ilLPCollections::_getPossibleItems($ref_id, $collection);
 
 		$data = array();
 		foreach($items as $item) {
 			$object = ilObjectFactory::getInstanceByRefId($item);
+
+			if($object instanceof ilContainer) {
+				// get modules recursive
+				$data += self::findCourseModules($object->getRefId(),  $show_offline);
+				continue;
+			}
+
 			$online = true;
 			if(method_exists($object, 'isOnline')) {
 				if(!$object->isOnline()) {
@@ -152,14 +173,7 @@ class srLearningProgressLookupModel {
 			);
 			$data[] = $row;
 		}
-
-		// sort alphabetic
-		usort($data, function($a, $b) {
-			return strcmp($a['title'], $b['title']);
-		});
-
-		self::$module_cache[$course_ref_id] = $data;
-		return self::$module_cache[$course_ref_id];
+		return $data;
 	}
 
 	public static function mergeDefaultOptions(array $options, array $defaults = array()) {
