@@ -1,0 +1,24 @@
+plugin_title#:#Learning Progress Lookup
+
+title_search_course#:#Search Course
+filter_label_title#:#Title
+table_label_title#:#Title
+table_label_path#:#Path
+table_label_online#:#Online
+
+online_status_0#:#Offline
+online_status_1#:#Online
+
+table_label_action#:#Action
+table_label_lookup#:#Lookup
+
+title_search_users#:#Search Users on Course "%s"
+back_to_course_search#:#Back to Course Search
+course_title#:#Title
+status_title#:#Status
+filter_label_login#:#Login
+filter_label_offline#:#Include Offline Modules
+no_modules_with_permission#:#No Modules available
+
+user_status_line#:#User: %s (%s %s)
+user_last_login_line#:#Last Login: %s
