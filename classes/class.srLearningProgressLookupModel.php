@@ -124,6 +124,7 @@ class srLearningProgressLookupModel {
 			$show_offline = true;
 		}
 
+		// find modules recursive
 		$data = self::findCourseModules($course_ref_id, $show_offline);
 
 		// sort alphabetic

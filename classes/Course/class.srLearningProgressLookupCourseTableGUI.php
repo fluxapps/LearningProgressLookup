@@ -197,7 +197,7 @@ class srLearningProgressLookupCourseTableGUI extends ilTable2GUI {
 				switch($k) {
 					case 'online':
 						$this->tpl->setCurrentBlock('td');
-						$this->tpl->setVariable('VALUE', ilUtil::img(srLearningProgressLookupModel::getOfflineStatusImageTag($a_set['online']), $this->pl->txt("online_status_".$a_set['online'])));
+						$this->tpl->setVariable('VALUE', ilUtil::img(srLearningProgressLookupModel::getOfflineStatusImageTag($a_set['online']), $this->pl->txt("online_status_".$a_set['online'], 18)));
 						$this->tpl->parseCurrentBlock();
 						break;
 					default:
