@@ -89,8 +89,6 @@ class srLearningProgressLookupCourseTableGUI extends ilTable2GUI {
 		$this->determineLimit();
 		$this->determineOffsetAndOrder();
 
-		$permission_filters = array();
-
 		$options = array(
 			'filters' => $this->filter,
 			'limit' => array(),
@@ -103,10 +101,7 @@ class srLearningProgressLookupCourseTableGUI extends ilTable2GUI {
 		$options['count'] = false;
 		$data = srLearningProgressLookupModel::getCourses($options);
 
-		//print_r($data); exit;
-
 		$this->setMaxCount($count);
-		//$this->setData($data);
 
 		$rows = array();
 		/** @var $courseRecord */
@@ -124,7 +119,7 @@ class srLearningProgressLookupCourseTableGUI extends ilTable2GUI {
 		$item = new ilTextInputGUI($this->pl->txt('course_title'), 'course_title');
 		$this->addFilterItem($item);
 		$item->readFromSession();
-		$this->filter['course_title'] = $item->getValue();
+		$this->filter['obj.title'] = $item->getValue();
 	}
 
 	public function getTableColumns() {

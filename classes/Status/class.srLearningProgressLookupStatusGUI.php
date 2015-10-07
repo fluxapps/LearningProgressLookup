@@ -4,6 +4,7 @@ require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHoo
 require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/LearningProgressLookup/classes/Status/class.srLearningProgressLookupStatusTableGUI.php");
 require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/LearningProgressLookup/classes/class.srLearningProgressLookupModel.php");
 
+require_once("./Services/Tracking/classes/class.ilLearningProgressBaseGUI.php");
 /**
  * GUI-Class Table srLearningProgressLookupStatusGUI
  *
@@ -28,6 +29,7 @@ class srLearningProgressLookupStatusGUI {
 	protected $toolbar;
 	protected $tabs;
 	protected $access;
+	protected $lng;
 
 	protected $ref_id;
 
@@ -49,6 +51,7 @@ class srLearningProgressLookupStatusGUI {
 		$this->ctrl = $ilCtrl;
 		$this->toolbar = $ilToolbar;
 		$this->tabs = $ilTabs;
+		$this->lng = $lng;
 		$this->access = $this->pl->getAccessManager();
 
 		$this->ref_id = (int) $_GET['ref_id'];
@@ -89,7 +92,11 @@ class srLearningProgressLookupStatusGUI {
 				break;
 		}
 
-		$this->tpl->setContent($this->table->getHTML());
+		$content = $this->table->getHTML();
+		$this->lng->loadLanguageModule('trac');
+		$content .= '<div class="lookup_legend">'.ilLearningProgressBaseGUI::__getLegendHTML().'</div>';
+
+		$this->tpl->setContent($content);
 	}
 
 

@@ -95,17 +95,7 @@ class srLearningProgressLookupStatusTableGUI extends ilTable2GUI {
 		$this->determineLimit();
 		$this->determineOffsetAndOrder();
 
-		$permission_filters = array();
-		$options = array(
-			'filters' => $this->filter,
-			'limit' => array( 'start' => (int)$this->getOffset(), 'end' => (int)$this->getLimit() ),
-			'count' => false,
-			'sort' => array( 'field' => $this->getOrderField(), 'direction' => $this->getOrderDirection() ),
-		);
-
-		$module_data = srLearningProgressLookupModel::getCourseModules($this->ref_id, $options);
-		$module_status_data = srLearningProgressLookupModel::getUserProgresses($this->ref_id);
-
+		// load users
 		$options = array(
 			'filters' => $this->filter,
 			'limit' => array(),
@@ -117,6 +107,17 @@ class srLearningProgressLookupStatusTableGUI extends ilTable2GUI {
 		$options['limit'] = array( 'start' => (int)$this->getOffset(), 'end' => (int)$this->getLimit() );
 		$options['count'] = false;
 		$data = srLearningProgressLookupModel::getCourseUsers($this->ref_id, $options);
+
+		// load modules and progress
+		$options = array(
+			'filters' => $this->filter,
+			'limit' => array( 'start' => (int)$this->getOffset(), 'end' => (int)$this->getLimit() ),
+			'count' => false,
+			'sort' => array( 'field' => $this->getOrderField(), 'direction' => $this->getOrderDirection() ),
+		);
+
+		$module_data = srLearningProgressLookupModel::getCourseModules($this->ref_id, $options);
+		$module_status_data = srLearningProgressLookupModel::getUserProgresses($this->ref_id, array_keys($data));
 
 		$this->setMaxCount($count);
 
@@ -222,7 +223,6 @@ class srLearningProgressLookupStatusTableGUI extends ilTable2GUI {
 		$this->tpl->setVariable('USER', sprintf($this->pl->txt('user_status_line'), $a_set['login'], $a_set['firstname'], $a_set['lastname']));
 		$this->tpl->setVariable('LAST_LOGIN', sprintf($this->pl->txt('user_last_login_line'), date("d.m.Y H:i", strtotime($a_set['last_login']))));
 
-
 		$this->tpl->setCurrentBlock('module_tr');
 		$this->tpl->setVariable('CSS_CLASS', 'status_line');
 		$this->tpl->setVariable('COURSE', $this->pl->txt('course_title'));
@@ -233,11 +233,13 @@ class srLearningProgressLookupStatusTableGUI extends ilTable2GUI {
 			$odd = true;
 			foreach ($a_set['modules'] as $key => $module) {
 				$this->tpl->setCurrentBlock('module_tr');
+
 				$css_class = "status_list_entry ";
-				$css_class .= ($odd) ? "odd" : "even";
+				$css_class .= ($odd) ? "odd " : "even ";
+				$css_class .= ($module['offline']) ? "offline" : "";
 				$this->tpl->setVariable('CSS_CLASS', $css_class);
 
-				$this->tpl->setVariable('COURSE', "<img src='" . $module['icon'] . "' /> " . $module['title']);
+				$this->tpl->setVariable('COURSE', ilUtil::img($module['icon']) . $module['title']);
 
 				$status = $a_set['user_progresses'][$module['obj_id']]['status'];
 				$this->tpl->setVariable('STATUS', ilUtil::img(srLearningProgressLookupModel::getProgressStatusImageTag($status), srLearningProgressLookupModel::getProgressStatusRepresentation($status), 22));

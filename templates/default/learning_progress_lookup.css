@@ -6,31 +6,48 @@ form[name=xlpl_status_table] .ilTableOuter {
 	 border: none !important;
 }
 
-form[name=xlpl_status_table] div.ilTableOuter table.fullwidth {
+#xlpl_status {
 	background: none !important;
 }
 
-form[name=xlpl_status_table] .title_line td {
-	padding: 20px 0 7px 0;
+#xlpl_status .title_line td {
+	padding: 30px 0 7px 0;
 }
 
-form[name=xlpl_status_table] .status_user {
+#xlpl_status tr:first-child > td {
+	padding: 0px 0 7px 0 !important;
+}
+
+#xlpl_status .status_user {
 	font-weight: bold;
 }
 
-form[name=xlpl_status_table] .status_last_login {
+#xlpl_status .status_last_login {
 	float: right;
 }
 
-form[name=xlpl_status_table] .status_line {
+#xlpl_status .status_line {
 	background: #d3d3d3;
 }
 
-form[name=xlpl_status_table] .status_list_entry {
+#xlpl_status .status_list_entry {
 	border-top: 1px solid darkgray;
 	border-bottom: 1px solid darkgray;
 }
 
-form[name=xlpl_status_table] .status_list_entry.odd {
+#xlpl_status .status_list_entry.odd {
 	background: #ededed;
+}
+
+#xlpl_status .status_list_entry img {
+	padding: 0 5px 0 0;
+}
+
+#xlpl_status .status_list_entry.offline {
+	/*background: #FFDFE1; */
+	text-decoration: line-through;
+}
+
+.lookup_legend {
+	margin-top: 10px;
 }

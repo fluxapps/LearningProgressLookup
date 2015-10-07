@@ -75,7 +75,10 @@ class srLearningProgressLookupCourseGUI {
 				break;
 		}
 
-		$this->tpl->setContent($this->table->getHTML());
+		$content = $this->table->getHTML();
+		$content .= '<div class="lookup_legend">'.$this->__getLegendHTML().'</div>';
+
+		$this->tpl->setContent($content);
 	}
 
 
@@ -106,6 +109,18 @@ class srLearningProgressLookupCourseGUI {
 		$this->ctrl->redirect($this);
 	}
 
+	public function __getLegendHTML() {
+		$tpl = new ilTemplate("tpl.offline_legend.html", true, true, "./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/LearningProgressLookup");
+		$tpl->setVariable("IMG_COMPLETED",
+			ilUtil::getImagePath("scorm/completed.png"));
+		$tpl->setVariable("IMG_FAILED",
+			ilUtil::getImagePath("scorm/failed.png"));
+		$tpl->setVariable("TXT_COMPLETED",
+			$this->pl->txt("online_status_1"));
+		$tpl->setVariable("TXT_FAILED",
+			$this->pl->txt("online_status_0"));
+		return $tpl->get();
+	}
 
 }
 

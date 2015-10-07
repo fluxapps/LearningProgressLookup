@@ -18,37 +18,25 @@ class srLearningProgressLookupModel {
 		$options = self::mergeDefaultOptions($options);
 
         $sql = 'SELECT DISTINCT ref.ref_id,
-				 obj.obj_id,
-                 obj.title as course_title,
-                 CONCAT_WS(" > ", gp.title, p.title) AS path,
-                 crs_settings.activation_type AS online
-				 FROM object_data as obj
+				obj.obj_id,
+				obj.title as course_title,
+				CONCAT_WS(" > ", gp.title, p.title) AS path,
+				crs_settings.activation_type AS online
+				FROM object_data as obj
 
 
-                 INNER JOIN object_reference AS ref ON (ref.obj_id = obj.obj_id)
-                 INNER JOIN crs_settings ON (crs_settings.obj_id = obj.obj_id)
+				INNER JOIN object_reference AS ref ON (ref.obj_id = obj.obj_id)
+				INNER JOIN crs_settings ON (crs_settings.obj_id = obj.obj_id)
 
-                INNER JOIN tree AS t1 ON (ref.ref_id = t1.child)
-                INNER JOIN object_reference ref2 ON (ref2.ref_id = t1.parent)
-                INNER JOIN object_data AS p ON (ref2.obj_id = p.obj_id)
+				INNER JOIN tree AS t1 ON (ref.ref_id = t1.child)
+				INNER JOIN object_reference ref2 ON (ref2.ref_id = t1.parent)
+				INNER JOIN object_data AS p ON (ref2.obj_id = p.obj_id)
 
-                LEFT JOIN tree AS t2 ON (ref2.ref_id = t2.child)
-                LEFT JOIN object_reference AS ref3 ON (ref3.ref_id = t2.parent)
-                LEFT JOIN object_data AS gp ON (ref3.obj_id = gp.obj_id)
+				LEFT JOIN tree AS t2 ON (ref2.ref_id = t2.child)
+				LEFT JOIN object_reference AS ref3 ON (ref3.ref_id = t2.parent)
+				LEFT JOIN object_data AS gp ON (ref3.obj_id = gp.obj_id)
 
-                 WHERE ref.deleted IS NULL ';
-
-		// fix for correct field name
-		if(isset($options['filters']['course_title'])) {
-			$options['filters']['obj.title'] = $options['filters']['course_title'];
-			unset($options['filters']['course_title']);
-		}
-
-		// fix for correct field name
-		if(isset($options['sort']['field']) && $options['sort']['field'] == 'course_title') {
-			$options['sort']['field'] = 'obj.title';
-			unset($options['filters']['course_title']);
-		}
+				WHERE ref.deleted IS NULL ';
 
 		$sql .= self::parseWhereQuery($options['filters']);
 		$sql .= self::parseDefaultQueryOptions($options);
@@ -75,14 +63,14 @@ class srLearningProgressLookupModel {
 		$options = self::mergeDefaultOptions($options);
 
 		if ($options['count']) {
-			$sql = 'SELECT COUNT(obj_members.usr_id) as count,';
+			$sql = 'SELECT COUNT(obj_members.usr_id) as count ';
 		} else {
-			$sql = 'SELECT obj_members.usr_id, ';
+			$sql = 'SELECT obj_members.usr_id, login, firstname, lastname, last_login ';
 		}
 
-		$sql .= "login, firstname, lastname, last_login FROM obj_members
-				LEFT JOIN usr_data ON obj_members.usr_id = usr_data.usr_id
-				WHERE obj_members.obj_id = ".$ilDB->quote(ilObject::_lookupObjId($course_ref_id),'integer')." ";
+		$sql .= "   FROM obj_members
+					LEFT JOIN usr_data ON obj_members.usr_id = usr_data.usr_id
+					WHERE obj_members.obj_id = ".$ilDB->quote(ilObject::_lookupObjId($course_ref_id),'integer')." ";
 
 		// only parse the login filter!
 		$sql .= self::parseWhereQuery($options['filters'], array('login'));
@@ -92,19 +80,17 @@ class srLearningProgressLookupModel {
 		if ($options['count']) {
 			$rec = $ilDB->fetchAssoc($result);
 			return $rec['count'];
-
 		} else {
 			$data = array();
 
 			while($rec = $ilDB->fetchAssoc($result)) {
-				$data[] = $rec;
+				$data[$rec['usr_id']] = $rec;
 			}
 			return $data;
 		}
-
 	}
 
-	public static function getUserProgresses($course_ref_id, array $options = array()) {
+	public static function getUserProgresses($course_ref_id, array $user_ids = array(), array $options = array()) {
 		global $ilDB;
 
 		$options = self::mergeDefaultOptions($options);
@@ -112,8 +98,8 @@ class srLearningProgressLookupModel {
 		$modules = self::getCourseModules($course_ref_id, $options);
 		$module_obj_ids = array_map(function ($ar) {return $ar['obj_id'];}, $modules);
 
-		$sql = "SELECT usr_id, obj_id, status FROM ut_lp_marks".
-			" WHERE ".$ilDB->in("obj_id", $module_obj_ids, false, "integer");
+		$sql = "SELECT usr_id, obj_id, status FROM ut_lp_marks
+				WHERE ".$ilDB->in("obj_id", $module_obj_ids, false, "integer")." AND ".$ilDB->in("usr_id", $user_ids, false, "integer");
 
 		$set = $ilDB->query($sql);
 		$res = array();
@@ -162,7 +148,7 @@ class srLearningProgressLookupModel {
 				'ref_id' => $object->getRefId(),
 				'title' => $object->getTitle(),
 				'icon' => ilUtil::getTypeIconPath($object->getType(), $object->getId()),
-				'online' => $online
+				'offline' => !$online
 			);
 			$data[] = $row;
 		}
