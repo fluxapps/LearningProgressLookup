@@ -6,6 +6,8 @@ require_once('./Services/Tracking/classes/class.ilLearningProgressBaseGUI.php');
 /**
  * Class srLearningProgressCourseModel
  *
+ * UPDATE HINT: For ILIAS 5 the ilLPCollections class needs to be replaced with ilLPCollectionOfRepositoryObjects
+ *
  * @author  Michael Herren <mh@studer-raimann.ch>
  * @version 1.0.0
  */
@@ -17,6 +19,7 @@ class srLearningProgressLookupModel {
 
 		$options = self::mergeDefaultOptions($options);
 
+		// TODO: for better performance it would be good to pack the "lp_other_users" access check into the query (using rbac_pa)
         $sql = 'SELECT DISTINCT ref.ref_id,
 				obj.obj_id,
 				obj.title as course_title,
