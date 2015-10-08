@@ -34,8 +34,8 @@ class srLearningProgressLookupStatusGUI {
 	protected $ref_id;
 
 	function __construct() {
-		if(!isset($_GET['ref_id'])) {
-			throw new ilException("No ref-ID set!");
+		if(!isset($_GET['course_ref_id'])) {
+			throw new ilException("No course ref-ID set!");
 		}
 
 		global $tpl, $ilCtrl, $ilAccess, $lng, $ilToolbar, $ilTabs;
@@ -54,7 +54,7 @@ class srLearningProgressLookupStatusGUI {
 		$this->lng = $lng;
 		$this->access = $this->pl->getAccessManager();
 
-		$this->ref_id = (int) $_GET['ref_id'];
+		$this->ref_id = (int) $_GET['course_ref_id'];
 
 		$this->tpl->setTitle($this->pl->txt('plugin_title'));
 	}
@@ -74,7 +74,7 @@ class srLearningProgressLookupStatusGUI {
 
 		$this->checkAccessOrFail();
 
-		$this->ctrl->saveParameter($this, 'ref_id');
+		$this->ctrl->saveParameter($this, 'course_ref_id');
 
 		$this->tpl->getStandardTemplate();
 

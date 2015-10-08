@@ -215,7 +215,7 @@ class srLearningProgressLookupCourseTableGUI extends ilTable2GUI {
 		}
 
 
-		$this->ctrl->setParameterByClass('srlearningprogresslookupstatusgui', 'ref_id', $a_set['ref_id']);
+		$this->ctrl->setParameterByClass('srlearningprogresslookupstatusgui', 'course_ref_id', $a_set['ref_id']);
         $link_target = $this->ctrl->getLinkTargetByClass('srlearningprogresslookupstatusgui');
 
 		$this->tpl->setCurrentBlock("cmd");
