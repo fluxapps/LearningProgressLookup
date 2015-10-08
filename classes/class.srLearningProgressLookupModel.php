@@ -75,6 +75,11 @@ class srLearningProgressLookupModel {
 					LEFT JOIN usr_data ON obj_members.usr_id = usr_data.usr_id
 					WHERE obj_members.obj_id = ".$ilDB->quote(ilObject::_lookupObjId($course_ref_id),'integer')." ";
 
+
+		if(strpos($options['filters']['login'], ',') !== false) {
+			$options['filters']['login'] = explode(',', $options['filters']['login']);
+		}
+
 		// only parse the login filter!
 		$sql .= self::parseWhereQuery($options['filters'], array('login'));
 		$sql .= self::parseDefaultQueryOptions($options);
@@ -192,7 +197,7 @@ class srLearningProgressLookupModel {
 		return array_merge($_options, $options);
 	}
 
-	public static function parseWhereQuery($filters, $valid_params = false, $first = false) {
+	public static function parseWhereQuery($filters, $valid_params = false, $first = false, $op = "AND") {
 		global $ilDB;
 
 		// allow filtering with *
@@ -204,7 +209,31 @@ class srLearningProgressLookupModel {
 					continue;
 				}
 
-				$sql .= ($first)? '' : ' AND ';
+				// parse options as array
+				if(is_array($value)) {
+					$other_sql = '';
+					$first = true;
+					foreach($value as $split) {
+						if($split != null && $split != '') {
+							$other_sql .= ($first)? '' : ' OR ';
+							if(!is_numeric($split) && !is_array($split)) {
+								$other_sql .= $ilDB->like($key, 'text', "%".trim(str_replace("*","%",trim($split)), "%")."%");
+							} else {
+								$other_sql .= $key."=".$ilDB->quote($split, 'text');
+							}
+							$first = false;
+						}
+					}
+
+					$sql .= $op.' ('.$other_sql.') ';
+
+					if($other_sql != '') {
+						$first = false;
+					}
+					continue;
+				}
+
+				$sql .= ($first)? '' : ' '.$op.' ';
 				if(!is_numeric($value) && !is_array($value)) {
 					$sql .= $ilDB->like($key, 'text', "%".trim(str_replace("*","%",trim($value)), "%")."%");
 				} else {
