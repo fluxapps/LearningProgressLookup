@@ -160,7 +160,7 @@ class srLearningProgressLookupModel {
 
 			if($object instanceof ilContainer) {
 				// get modules recursive
-				$data += self::findCourseModules($object->getRefId(),  $show_offline);
+				//$data += self::findCourseModules($object->getRefId(),  $show_offline);
 				continue;
 			}
 
