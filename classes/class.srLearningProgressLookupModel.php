@@ -169,7 +169,8 @@ class srLearningProgressLookupModel {
 			}
 
 			// check if offline show is enabled and user has lp-other-users right
-			if(!$show_offline && !$online || !$rbacsystem->checkAccess("lp_other_users", $object->getRefId())) {
+			//if(!$show_offline && !$online || !$rbacsystem->checkAccess("lp_other_users", $object->getRefId())) {
+			if(!$show_offline && !$online) {
 				continue;
 			}
 
