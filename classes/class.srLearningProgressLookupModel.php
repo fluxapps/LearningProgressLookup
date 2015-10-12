@@ -109,7 +109,6 @@ class srLearningProgressLookupModel {
 		$sql = "SELECT usr_id, obj_id, status FROM ut_lp_marks
 				WHERE ".$ilDB->in("obj_id", $module_obj_ids, false, "integer")." AND ".$ilDB->in("usr_id", $user_ids, false, "integer");
 
-		var_dump($sql);
 		$set = $ilDB->query($sql);
 		$res = array();
 		while($rec = $ilDB->fetchAssoc($set)) {
@@ -135,8 +134,6 @@ class srLearningProgressLookupModel {
 
 		// find modules recursive
 		$data = self::findCourseModules($course_ref_id, $show_offline);
-
-		var_dump($data);
 
 		// sort alphabetic
 		usort($data, function($a, $b) {
