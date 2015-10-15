@@ -39,7 +39,8 @@ class ilLearningProgressLookupAccess {
 	public function hasCurrentUserStatusPermission($ref_id) {
 		global $rbacsystem;
 
-		if($rbacsystem->checkAccess("lp_other_users", $ref_id)) {
+		$object_type = ilObjectFactory::getTypeByRefId($ref_id);
+		if($rbacsystem->checkAccess("lp_other_users", $ref_id) && $object_type == 'crs') {
 			return true;
 		}
 
