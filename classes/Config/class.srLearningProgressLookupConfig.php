@@ -8,10 +8,7 @@ require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHoo
  */
 class srLearningProgressLookupConfig extends ActiveRecord {
 
-    /*const F_TRAINING_OBJ_CAT_REF_ID = 'training_obj_cat_ref_id';
-	const F_CHANGE_LOCK = 'change_lock';
-	const F_LAST_CRONJOB_DATE = 'last_cronjob_date';
-	const F_SYSTEM_USER_ID = 'system_user_id';*/
+    //const F_ADMIN_ROLES = 'admin_roles';
 
     /**
      * @var array
@@ -115,13 +112,13 @@ class srLearningProgressLookupConfig extends ActiveRecord {
      * @param string $value
      */
     public function setValue($value) {
-        $this->value = $value;
+        $this->value = json_encode($value);
     }
     /**
      * @return string
      */
     public function getValue() {
-        return $this->value;
+        return json_decode($this->value, true);
     }
     /**
      * @param string $name

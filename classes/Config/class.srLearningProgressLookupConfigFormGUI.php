@@ -47,25 +47,14 @@ class srLearningProgressLookupConfigFormGUI extends ilPropertyFormGUI {
     protected function initForm() {
         global $rbacreview, $ilUser;
 
-        $this->setTitle($this->txt('filter_label_title'));
+        /*$this->setTitle($this->txt('title'));
 
-        /*$access_role_config = new ilTextInputGUI($this->txt(ilTrainingProgramConfig::F_TRAINING_OBJ_CAT_REF_ID), ilTrainingProgramConfig::F_TRAINING_OBJ_CAT_REF_ID);
-        $access_role_config->setRequired(true);
-        $this->addItem($access_role_config);
+        $se = new ilMultiSelectInputGUI($this->txt('config_allowed_change_roles'), srLearningProgressLookupConfig::F_ADMIN_ROLES);
+        $se->setWidth(400);
+        $se->setOptions(array());
+        $this->addItem($se);
 
-	    $change_lock = new ilNumberInputGUI($this->txt(ilTrainingProgramConfig::F_CHANGE_LOCK), ilTrainingProgramConfig::F_CHANGE_LOCK);
-	    $change_lock->setRequired(true);
-	    $this->addItem($change_lock);
-
-	    $last_cronjob = new ilNumberInputGUI($this->txt(ilTrainingProgramConfig::F_LAST_CRONJOB_DATE), ilTrainingProgramConfig::F_LAST_CRONJOB_DATE);
-	    $last_cronjob->setRequired(true);
-	    $this->addItem($last_cronjob);
-
-	    $system_user_id = new ilNumberInputGUI($this->txt(ilTrainingProgramConfig::F_SYSTEM_USER_ID), ilTrainingProgramConfig::F_SYSTEM_USER_ID);
-	    $system_user_id->setRequired(true);
-	    $this->addItem($system_user_id);*/
-
-	    $this->addCommandButtons();
+	    $this->addCommandButtons();*/
     }
 
 

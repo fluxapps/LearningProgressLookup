@@ -48,6 +48,7 @@ class srLearningProgressLookupModel {
 		$data = array();
 
 		while($rec = $ilDB->fetchAssoc($result)) {
+			// only display, when user has lp_other_users right!
 			if($rbacsystem->checkAccess("lp_other_users", $rec['ref_id'])) {
 				$data[] = $rec;
 			}

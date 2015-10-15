@@ -67,10 +67,10 @@ class ilLearningProgressLookupConfigGUI extends ilPluginConfigGUI {
         $config_form_gui = $this->initForm();
         $config_form_gui->setValuesByPost();
         if ($config_form_gui->saveObject()) {
-            ilUtil::sendSuccess($this->pl->txt("ui_lpl_saved_config"), true);
+            ilUtil::sendSuccess($this->pl->txt("message_saved_config"), true);
             $this->ctrl->redirect($this, self::CMD_DEFAULT);
         } else {
-            ilUtil::sendFailure($this->pl->txt("ui_lpl_saved_failed_config"));
+            ilUtil::sendFailure($this->pl->txt("message_saved_failed_config"));
         }
 
         $this->tpl->setContent($config_form_gui->getHTML());

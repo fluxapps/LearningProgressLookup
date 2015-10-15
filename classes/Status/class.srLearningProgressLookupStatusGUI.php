@@ -61,7 +61,7 @@ class srLearningProgressLookupStatusGUI {
 
 
 	protected function checkAccessOrFail() {
-		if($this->access->hasCurrentUserViewPermission()) {
+		if($this->access->hasCurrentUserViewPermission() && $this->access->hasCurrentUserStatusPermission($this->ref_id)) {
 			return true;
 		}
 
@@ -94,6 +94,8 @@ class srLearningProgressLookupStatusGUI {
 		}
 
 		$content = $this->table->getHTML();
+
+		// display legend
 		$this->lng->loadLanguageModule('trac');
 		$content .= '<div class="lookup_legend">'.ilLearningProgressBaseGUI::__getLegendHTML().'</div>';
 
