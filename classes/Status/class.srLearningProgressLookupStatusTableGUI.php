@@ -5,6 +5,7 @@ require_once('./Services/Form/classes/class.ilTextInputGUI.php');
 require_once('./Services/Form/classes/class.ilSelectInputGUI.php');
 require_once('./Services/Form/classes/class.ilDateTimeInputGUI.php');
 require_once("./Services/Form/classes/class.ilCombinationInputGUI.php");
+require_once("./Services/Form/classes/class.ilCheckboxInputGUI.php");
 
 require_once('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/LearningProgressLookup/classes/class.ilLearningProgressLookupPlugin.php');
 require_once('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/LearningProgressLookup/classes/Course/class.srLearningProgressLookupCourseTableGUI.php');
@@ -363,4 +364,4 @@ class srLearningProgressLookupStatusTableGUI extends ilTable2GUI {
 	public function getShowDefaultFilter() {
 		return $this->show_default_filter;
 	}
-} 
+}
