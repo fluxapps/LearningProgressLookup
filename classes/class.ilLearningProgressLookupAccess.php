@@ -40,7 +40,7 @@ class ilLearningProgressLookupAccess {
 		global $rbacsystem;
 
 		$object_type = ilObjectFactory::getTypeByRefId($ref_id);
-		if($rbacsystem->checkAccess("lp_other_users", $ref_id) && $object_type == 'crs') {
+		if($rbacsystem->checkAccess("edit_learning_progress", $ref_id) && $object_type == 'crs') {
 			return true;
 		}
 

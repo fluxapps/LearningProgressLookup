@@ -19,7 +19,7 @@ class srLearningProgressLookupModel {
 
 		$options = self::mergeDefaultOptions($options);
 
-		// TODO: for better performance it would be good to pack the "lp_other_users" access check into the query (using rbac_pa)
+		// TODO: for better performance it would be good to pack the "edit_learning_progress" access check into the query (using rbac_pa)
         $sql = 'SELECT DISTINCT ref.ref_id,
 				obj.obj_id,
 				obj.title as course_title,
@@ -48,8 +48,8 @@ class srLearningProgressLookupModel {
 		$data = array();
 
 		while($rec = $ilDB->fetchAssoc($result)) {
-			// only display, when user has lp_other_users right!
-			if($rbacsystem->checkAccess("lp_other_users", $rec['ref_id'])) {
+			// only display, when user has edit_learning_progress right!
+			if($rbacsystem->checkAccess("edit_learning_progress", $rec['ref_id'])) {
 				$data[] = $rec;
 			}
 		}
@@ -170,7 +170,7 @@ class srLearningProgressLookupModel {
 			}
 
 			// check if offline show is enabled and user has lp-other-users right
-			if(!$show_offline && !$online || !$rbacsystem->checkAccess("lp_other_users", $object->getRefId())) {
+			if(!$show_offline && !$online || !$rbacsystem->checkAccess("edit_learning_progress", $object->getRefId())) {
 				continue;
 			}
 
