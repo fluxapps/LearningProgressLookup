@@ -163,12 +163,17 @@ class srLearningProgressLookupModel {
 			}
 
 			$online = true;
+			// determine if something is online in ILIAS
 			if(method_exists($object, 'isOnline')) {
 				if(!$object->isOnline()) {
 					$online = false;
 				}
 			} else if (method_exists($object, 'getOnline')) {
 				if(!$object->getOnline()) {
+					$online = false;
+				}
+			} else if(method_exists($object, '_lookupOnline')) {
+				if(!$object->_lookupOnline()) {
 					$online = false;
 				}
 			}
