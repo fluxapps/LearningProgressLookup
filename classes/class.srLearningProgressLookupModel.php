@@ -155,13 +155,7 @@ class srLearningProgressLookupModel {
 		$data = array();
 		foreach($items as $item) {
 			$object = ilObjectFactory::getInstanceByRefId($item);
-
-			if($object instanceof ilContainer) {
-				// get modules recursive
-				//$data += self::findCourseModules($object->getRefId(),  $show_offline);
-				continue;
-			}
-
+			
 			$online = true;
 			// determine if something is online in ILIAS
 			if(method_exists($object, 'isOnline')) {
@@ -186,7 +180,7 @@ class srLearningProgressLookupModel {
 			$row = array(
 				'obj_id' => $object->getId(),
 				'ref_id' => $object->getRefId(),
-				'title' => $object->getTitle(),
+				'title' => $object->getPresentationTitle(),
 				'icon' => ilUtil::getTypeIconPath($object->getType(), $object->getId()),
 				'offline' => !$online
 			);
