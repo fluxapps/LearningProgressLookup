@@ -167,6 +167,10 @@ class srLearningProgressLookupModel {
 				if(!$object->isOnline()) {
 					$online = false;
 				}
+			} else if (method_exists($object, 'getOnline')) {
+				if(!$object->getOnline()) {
+					$online = false;
+				}
 			}
 
 			// check if offline show is enabled and user has lp-other-users right
