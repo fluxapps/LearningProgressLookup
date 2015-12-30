@@ -65,17 +65,18 @@ class srLearningProgressLookupModel {
 		global $ilDB;
 
 		$options = self::mergeDefaultOptions($options);
-
+		
 		if ($options['count']) {
-			$sql = 'SELECT COUNT(obj_members.usr_id) as count ';
+			$sql = 'SELECT COUNT(usr_id) as count ';
 		} else {
-			$sql = 'SELECT obj_members.usr_id, login, firstname, lastname, last_login ';
+			$sql = 'SELECT usr_id, login, firstname, lastname, last_login ';
 		}
 
-		$sql .= "   FROM obj_members
-					LEFT JOIN usr_data ON obj_members.usr_id = usr_data.usr_id
-					WHERE obj_members.obj_id = ".$ilDB->quote(ilObject::_lookupObjId($course_ref_id),'integer')." ";
-
+		$sql .= "FROM usr_data WHERE usr_data.usr_id <> ".ANONYMOUS_USER_ID." ".
+			"AND usr_data.usr_id IN (SELECT DISTINCT ud.usr_id ".
+			"FROM usr_data ud join rbac_ua ON (ud.usr_id = rbac_ua.usr_id) ".
+			"JOIN object_data od ON (rbac_ua.rol_id = od.obj_id) ".
+			"WHERE od.title LIKE 'il_crs_%_".$ilDB->quote($course_ref_id)."') ";
 
 		if(strpos($options['filters']['login'], ',') !== false) {
 			$options['filters']['login'] = explode(',', $options['filters']['login']);
