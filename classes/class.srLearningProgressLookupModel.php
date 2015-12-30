@@ -65,7 +65,7 @@ class srLearningProgressLookupModel {
 		global $ilDB;
 
 		$options = self::mergeDefaultOptions($options);
-		
+
 		if ($options['count']) {
 			$sql = 'SELECT COUNT(usr_id) as count ';
 		} else {
