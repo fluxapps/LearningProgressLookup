@@ -63,8 +63,6 @@ class srLearningProgressLookupStatusTableGUI extends ilTable2GUI {
 		$this->setRowTemplate('tpl.status_row.html', $this->pl->getDirectory());
 		$this->setFormAction($this->ctrl->getFormAction($parent_obj));
 		$this->setFormName('xlpl_status_table');
-		//$this->setDefaultOrderField('Datetime');
-		$this->setDefaultOrderDirection('desc');
 
 		$this->setShowRowsSelector(false);
 
@@ -91,10 +89,15 @@ class srLearningProgressLookupStatusTableGUI extends ilTable2GUI {
 		global $ilUser;
 		$this->setExternalSorting(true);
 		$this->setExternalSegmentation(true);
-		$this->setDefaultOrderField($this->columns[0]);
+
+		$this->setDefaultOrderField('login');
+		$this->setDefaultOrderDirection("ASC");
 
 		$this->determineLimit();
 		$this->determineOffsetAndOrder();
+
+		$this->setOrderField('login');
+		$this->setOrderDirection("ASC");
 
 		// load users
 		$options = array(
