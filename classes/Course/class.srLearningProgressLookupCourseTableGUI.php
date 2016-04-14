@@ -78,7 +78,6 @@ class srLearningProgressLookupCourseTableGUI extends ilTable2GUI {
 
 
 	protected function parseData() {
-		global $ilUser;
 		$this->setExternalSorting(true);
 		$this->setExternalSegmentation(true);
 		$this->setDefaultOrderField($this->columns[0]);
@@ -124,10 +123,11 @@ class srLearningProgressLookupCourseTableGUI extends ilTable2GUI {
 	public function getTableColumns() {
 		$cols = array();
 
-		$cols['course_title'] = array( 'txt'        => $this->pl->txt('table_label_title'),
-		                               'default'    => true,
-		                               'width'      => 'auto',
-		                               'sort_field' => 'course_title',
+		$cols['course_title'] = array(
+			'txt'        => $this->pl->txt('table_label_title'),
+			'default'    => true,
+			'width'      => 'auto',
+			'sort_field' => 'course_title',
 		);
 		$cols['path'] = array( 'txt' => $this->pl->txt('table_label_path'), 'default' => true, 'width' => 'auto' );
 		$cols['online'] = array( 'txt' => $this->pl->txt('table_label_online'), 'default' => true, 'width' => 'auto' );
@@ -155,7 +155,7 @@ class srLearningProgressLookupCourseTableGUI extends ilTable2GUI {
 			$this->addColumn($v['txt'], $sort, $v['width']);
 			//}
 		}
-		$this->addColumn($this->pl->txt('table_label_action'));
+		$this->addColumn($this->pl->txt('table_label_action'), '', '150px', 'text-right');
 	}
 
 

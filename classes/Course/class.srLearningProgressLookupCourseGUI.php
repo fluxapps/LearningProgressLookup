@@ -81,7 +81,6 @@ class srLearningProgressLookupCourseGUI {
 
 
 	public function index() {
-		//$this->toolbar->addButton($this->pl->txt('new_role'), $this->ctrl->getLinkTargetByClass("ilTrainingProgramRoleGUI", 'newRole'));
 		$this->table = new srLearningProgressLookupCourseTableGUI($this);
 		$this->tpl->setContent($this->table->getHTML());
 	}
@@ -110,8 +109,8 @@ class srLearningProgressLookupCourseGUI {
 
 	public function __getLegendHTML() {
 		$tpl = new ilTemplate("tpl.offline_legend.html", true, true, "./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/LearningProgressLookup");
-		$tpl->setVariable("IMG_COMPLETED", ilUtil::getImagePath("scorm/completed.png"));
-		$tpl->setVariable("IMG_FAILED", ilUtil::getImagePath("scorm/failed.png"));
+		$tpl->setVariable("IMG_COMPLETED", ilUtil::getImagePath("scorm/completed.svg"));
+		$tpl->setVariable("IMG_FAILED", ilUtil::getImagePath("scorm/failed.svg"));
 		$tpl->setVariable("TXT_COMPLETED", $this->pl->txt("online_status_1"));
 		$tpl->setVariable("TXT_FAILED", $this->pl->txt("online_status_0"));
 

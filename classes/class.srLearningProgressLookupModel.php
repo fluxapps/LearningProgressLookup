@@ -1,14 +1,14 @@
 <?php
 
-//require_once('./Services/Tracking/classes/class.ilLPCollections.php');
+require_once('./Services/Tracking/classes/collection/class.ilLPCollectionOfRepositoryObjects.php');
 require_once('./Services/Tracking/classes/class.ilLearningProgressBaseGUI.php');
 
 /**
  * Class srLearningProgressCourseModel
  *
- * UPDATE HINT: For ILIAS 5 the ilLPCollections class needs to be replaced with ilLPCollectionOfRepositoryObjects
- *
  * @author  Michael Herren <mh@studer-raimann.ch>
+ * @author  Fabian Schmid <fs@studer-raimann.ch>
+ *
  * @version 1.0.0
  */
 class srLearningProgressLookupModel {
@@ -186,8 +186,9 @@ class srLearningProgressLookupModel {
 		global $rbacsystem;
 
 		$obj_id = ilObject::_lookupObjId($ref_id);
-		$collection = new ilLPCollections($obj_id);
-		$items = ilLPCollections::_getPossibleItems($ref_id, $collection);
+		$collection = new ilLPCollectionOfRepositoryObjects($obj_id, ilLPObjSettings::LP_MODE_COLLECTION);
+
+		$items = $collection->getPossibleItems($ref_id);
 
 		$data = array();
 		foreach ($items as $item) {
