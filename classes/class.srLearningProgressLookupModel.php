@@ -88,6 +88,10 @@ class srLearningProgressLookupModel {
 		        . "FROM usr_data ud join rbac_ua ON (ud.usr_id = rbac_ua.usr_id) " . "JOIN object_data od ON (rbac_ua.rol_id = od.obj_id) "
 		        . "WHERE od.title LIKE 'il_crs_%_" . $ilDB->quote($course_ref_id) . "') ";
 
+		if ($options['count']) {
+			$sql .= "GROUP BY usr_id";
+		}
+
 		if (strpos($options['filters']['login'], ',') !== false) {
 			$options['filters']['login'] = explode(',', $options['filters']['login']);
 		}
