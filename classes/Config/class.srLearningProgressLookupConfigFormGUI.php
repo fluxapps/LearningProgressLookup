@@ -4,7 +4,6 @@ require_once('./Services/Form/classes/class.ilMultiSelectInputGUI.php');
 require_once('./Services/Form/classes/class.ilRoleAutoCompleteInputGUI.php');
 require_once('class.srLearningProgressLookupConfig.php');
 
-
 /**
  * Class
  *
@@ -12,132 +11,134 @@ require_once('class.srLearningProgressLookupConfig.php');
  */
 class srLearningProgressLookupConfigFormGUI extends ilPropertyFormGUI {
 
-    /**
-     * @var
-     */
-    protected $parent_gui;
-    /**
-     * @var  ilCtrl
-     */
-    protected $ctrl;
-
-    /**
-     * @param  $parent_gui
-     */
-    public function __construct($parent_gui) {
-        global $ilCtrl;
-        $this->parent_gui = $parent_gui;
-        $this->ctrl = $ilCtrl;
-        $this->pl = ilLearningProgressLookupPlugin::getInstance();
-        $this->setFormAction($this->ctrl->getFormAction($this->parent_gui));
-        $this->initForm();
-    }
+	/**
+	 * @var
+	 */
+	protected $parent_gui;
+	/**
+	 * @var  ilCtrl
+	 */
+	protected $ctrl;
 
 
-    /**
-     * @param $field
-     *
-     * @return string
-     */
-    public function txt($field) {
-        return $this->pl->txt('admin_form_' . $field);
-    }
+	/**
+	 * @param  $parent_gui
+	 */
+	public function __construct($parent_gui) {
+		global $ilCtrl;
+		$this->parent_gui = $parent_gui;
+		$this->ctrl = $ilCtrl;
+		$this->pl = ilLearningProgressLookupPlugin::getInstance();
+		$this->setFormAction($this->ctrl->getFormAction($this->parent_gui));
+		$this->initForm();
+	}
 
 
-    protected function initForm() {
-        global $rbacreview, $ilUser;
-
-        /*$this->setTitle($this->txt('title'));
-
-        $se = new ilMultiSelectInputGUI($this->txt('config_allowed_change_roles'), srLearningProgressLookupConfig::F_ADMIN_ROLES);
-        $se->setWidth(400);
-        $se->setOptions(array());
-        $this->addItem($se);
-
-	    $this->addCommandButtons();*/
-    }
+	/**
+	 * @param $field
+	 *
+	 * @return string
+	 */
+	public function txt($field) {
+		return $this->pl->txt('admin_form_' . $field);
+	}
 
 
-    public function fillForm() {
-        $array = array();
-        foreach ($this->getItems() as $item) {
-            $this->getValuesForItem($item, $array);
-        }
-        $this->setValuesByArray($array);
-    }
+	protected function initForm() {
+		global $rbacreview, $ilUser;
+		/*$this->setTitle($this->txt('title'));
 
-    /**
-     * @param ilFormPropertyGUI $item
-     * @param                   $array
-     *
-     * @internal param $key
-     */
-    private function getValuesForItem($item, &$array) {
-        if (self::checkItem($item)) {
-            $key = $item->getPostVar();
-            $array[$key] = ilTrainingProgramConfig::get($key);
-            if (self::checkForSubItem($item)) {
-                foreach ($item->getSubItems() as $subitem) {
-                    $this->getValuesForItem($subitem, $array);
-                }
-            }
-        }
-    }
+		$se = new ilMultiSelectInputGUI($this->txt('config_allowed_change_roles'), srLearningProgressLookupConfig::F_ADMIN_ROLES);
+		$se->setWidth(400);
+		$se->setOptions(array());
+		$this->addItem($se);
 
-    /**
-     * @return bool
-     */
-    public function saveObject() {
-        if (!$this->checkInput()) {
-            return false;
-        }
-        foreach ($this->getItems() as $item) {
-            $this->saveValueForItem($item);
-        }
-
-        return true;
-    }
+		$this->addCommandButtons();*/
+	}
 
 
-    /**
-     * @param  ilFormPropertyGUI $item
-     */
-    private function saveValueForItem($item) {
-        if (self::checkItem($item)) {
-            $key = $item->getPostVar();
-            ilTrainingProgramConfig::set($key, $this->getInput($key));
-
-            if (self::checkForSubItem($item)) {
-                foreach ($item->getSubItems() as $subitem) {
-                    $this->saveValueForItem($subitem);
-                }
-            }
-        }
-    }
+	public function fillForm() {
+		$array = array();
+		foreach ($this->getItems() as $item) {
+			$this->getValuesForItem($item, $array);
+		}
+		$this->setValuesByArray($array);
+	}
 
 
-    /**
-     * @param $item
-     *
-     * @return bool
-     */
-    public static function checkForSubItem($item) {
-        return !$item instanceof ilFormSectionHeaderGUI AND !$item instanceof ilMultiSelectInputGUI;
-    }
+	/**
+	 * @param ilFormPropertyGUI $item
+	 * @param                   $array
+	 *
+	 * @internal param $key
+	 */
+	private function getValuesForItem($item, &$array) {
+		if (self::checkItem($item)) {
+			$key = $item->getPostVar();
+			$array[$key] = ilTrainingProgramConfig::get($key);
+			if (self::checkForSubItem($item)) {
+				foreach ($item->getSubItems() as $subitem) {
+					$this->getValuesForItem($subitem, $array);
+				}
+			}
+		}
+	}
 
 
-    /**
-     * @param $item
-     *
-     * @return bool
-     */
-    public static function checkItem($item) {
-        return !$item instanceof ilFormSectionHeaderGUI;
-    }
+	/**
+	 * @return bool
+	 */
+	public function saveObject() {
+		if (!$this->checkInput()) {
+			return false;
+		}
+		foreach ($this->getItems() as $item) {
+			$this->saveValueForItem($item);
+		}
+
+		return true;
+	}
 
 
-    protected function addCommandButtons() {
-        $this->addCommandButton('save', $this->pl->txt('admin_form_button_save'));
-        $this->addCommandButton('cancel', $this->pl->txt('admin_form_button_cancel'));
-    }
+	/**
+	 * @param  ilFormPropertyGUI $item
+	 */
+	private function saveValueForItem($item) {
+		if (self::checkItem($item)) {
+			$key = $item->getPostVar();
+			ilTrainingProgramConfig::set($key, $this->getInput($key));
+
+			if (self::checkForSubItem($item)) {
+				foreach ($item->getSubItems() as $subitem) {
+					$this->saveValueForItem($subitem);
+				}
+			}
+		}
+	}
+
+
+	/**
+	 * @param $item
+	 *
+	 * @return bool
+	 */
+	public static function checkForSubItem($item) {
+		return !$item instanceof ilFormSectionHeaderGUI AND !$item instanceof ilMultiSelectInputGUI;
+	}
+
+
+	/**
+	 * @param $item
+	 *
+	 * @return bool
+	 */
+	public static function checkItem($item) {
+		return !$item instanceof ilFormSectionHeaderGUI;
+	}
+
+
+	protected function addCommandButtons() {
+		$this->addCommandButton('save', $this->pl->txt('admin_form_button_save'));
+		$this->addCommandButton('cancel', $this->pl->txt('admin_form_button_cancel'));
+	}
 }

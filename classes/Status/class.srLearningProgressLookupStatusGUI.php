@@ -5,10 +5,11 @@ require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHoo
 require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/LearningProgressLookup/classes/class.srLearningProgressLookupModel.php");
 
 require_once("./Services/Tracking/classes/class.ilLearningProgressBaseGUI.php");
+
 /**
  * GUI-Class Table srLearningProgressLookupStatusGUI
  *
- * @author Michael Herren <mh@studer-raimann.ch>
+ * @author            Michael Herren <mh@studer-raimann.ch>
  *
  * @ilCtrl_IsCalledBy srLearningProgressLookupStatusGUI: ilLearningProgressLookupGUI
  */
@@ -17,12 +18,10 @@ class srLearningProgressLookupStatusGUI {
 	const CMD_DEFAULT = 'index';
 	const CMD_RESET_FILTER = 'resetFilter';
 	const CMD_APPLY_FILTER = 'applyFilter';
-
 	/**
 	 * @var  ilTable2GUI
 	 */
 	protected $table;
-
 	protected $tpl;
 	protected $ctrl;
 	protected $pl;
@@ -30,21 +29,21 @@ class srLearningProgressLookupStatusGUI {
 	protected $tabs;
 	protected $access;
 	protected $lng;
-
 	protected $ref_id;
 
+
 	function __construct() {
-		if(!isset($_GET['course_ref_id'])) {
+		if (!isset($_GET['course_ref_id'])) {
 			throw new ilException("No course ref-ID set!");
 		}
 
 		global $tpl, $ilCtrl, $ilAccess, $lng, $ilToolbar, $ilTabs;
 		/**
-		 * @var ilTemplate      $tpl
-		 * @var ilCtrl          $ilCtrl
+		 * @var ilTemplate $tpl
+		 * @var ilCtrl $ilCtrl
 		 * @var ilAccessHandler $ilAccess
-		 * @var ilToolbarGUI $ilToolbar;
-		 * @var ilTabsGUI $ilTabs;
+		 * @var ilToolbarGUI $ilToolbar ;
+		 * @var ilTabsGUI $ilTabs       ;
 		 */
 		$this->pl = ilLearningProgressLookupPlugin::getInstance();
 		$this->tpl = $tpl;
@@ -54,14 +53,14 @@ class srLearningProgressLookupStatusGUI {
 		$this->lng = $lng;
 		$this->access = $this->pl->getAccessManager();
 
-		$this->ref_id = (int) $_GET['course_ref_id'];
+		$this->ref_id = (int)$_GET['course_ref_id'];
 
 		$this->tpl->setTitle($this->pl->txt('plugin_title'));
 	}
 
 
 	protected function checkAccessOrFail() {
-		if($this->access->hasCurrentUserViewPermission() && $this->access->hasCurrentUserStatusPermission($this->ref_id)) {
+		if ($this->access->hasCurrentUserViewPermission() && $this->access->hasCurrentUserStatusPermission($this->ref_id)) {
 			return true;
 		}
 
@@ -81,7 +80,10 @@ class srLearningProgressLookupStatusGUI {
 		$this->tabs->clearTargets();
 		$this->tabs->tabs = null;
 		/*$this->tabs->addTab("status_gui", sprintf($this->pl->txt('title_search_users'), ilObject::_lookupTitle(ilObject::_lookupObjectId($this->ref_id))), $this->ctrl->getLinkTarget($this));*/
-		$this->tabs->setBackTarget($this->pl->txt('back_to_course_search'), $this->ctrl->getLinkTargetByClass(array('illearningprogresslookupgui', 'srlearningprogresslookupcoursegui')));
+		$this->tabs->setBackTarget($this->pl->txt('back_to_course_search'), $this->ctrl->getLinkTargetByClass(array(
+			'illearningprogresslookupgui',
+			'srlearningprogresslookupcoursegui',
+		)));
 
 		switch ($cmd) {
 			case self::CMD_RESET_FILTER:
@@ -97,28 +99,28 @@ class srLearningProgressLookupStatusGUI {
 
 		// display legend
 		$this->lng->loadLanguageModule('trac');
-		$content .= '<div class="lookup_legend">'.ilLearningProgressBaseGUI::__getLegendHTML().'</div>';
+		$content .= '<div class="lookup_legend">' . ilLearningProgressBaseGUI::__getLegendHTML() . '</div>';
 
 		$this->tpl->setContent($content);
 	}
 
 
 	public function index() {
-        $this->table = new srLearningProgressLookupStatusTableGUI($this, $this->getRefId());
+		$this->table = new srLearningProgressLookupStatusTableGUI($this, $this->getRefId());
 		$this->tpl->setContent($this->table->getHTML());
 	}
 
 
 	public function applyFilter() {
-        $this->table = new srLearningProgressLookupStatusTableGUI($this,  $this->getRefId(), self::CMD_APPLY_FILTER);
-        $this->table->writeFilterToSession();
+		$this->table = new srLearningProgressLookupStatusTableGUI($this, $this->getRefId(), self::CMD_APPLY_FILTER);
+		$this->table->writeFilterToSession();
 		$this->table->resetOffset();
 		$this->index();
 	}
 
 
 	public function resetFilter() {
-        $this->table = new srLearningProgressLookupStatusTableGUI($this,  $this->getRefId(), self::CMD_RESET_FILTER);
+		$this->table = new srLearningProgressLookupStatusTableGUI($this, $this->getRefId(), self::CMD_RESET_FILTER);
 		$this->table->resetOffset();
 		$this->table->resetFilter();
 		$this->index();
@@ -129,13 +131,13 @@ class srLearningProgressLookupStatusGUI {
 		$this->ctrl->redirect($this);
 	}
 
+
 	/**
 	 * @return int
 	 */
 	public function getRefId() {
 		return $this->ref_id;
 	}
-
 }
 
 ?>

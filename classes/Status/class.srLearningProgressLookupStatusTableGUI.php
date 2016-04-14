@@ -26,19 +26,16 @@ class srLearningProgressLookupStatusTableGUI extends ilTable2GUI {
 	protected $filter = array();
 	protected $access;
 	protected $ref_id;
-
 	protected $ignored_cols;
-
-	/** @var bool  */
-	protected  $show_default_filter = false;
-
-	/** @var array  */
-	protected  $numeric_fields = array("");
+	/** @var bool */
+	protected $show_default_filter = false;
+	/** @var array */
+	protected $numeric_fields = array( "" );
 
 
 	/**
-	 * @param srLearningProgressLookupCourseGUI  $parent_obj
-	 * @param string                        $parent_cmd
+	 * @param srLearningProgressLookupCourseGUI $parent_obj
+	 * @param string $parent_cmd
 	 */
 	public function __construct($parent_obj, $ref_id, $parent_cmd = "index") {
 		/** @var $ilCtrl ilCtrl */
@@ -51,7 +48,7 @@ class srLearningProgressLookupStatusTableGUI extends ilTable2GUI {
 		$this->toolbar = $ilToolbar;
 		$this->ref_id = $ref_id;
 
-		if(!$ilCtrl->getCmd()) {
+		if (!$ilCtrl->getCmd()) {
 			$this->setShowDefaultFilter(true);
 		}
 
@@ -70,7 +67,7 @@ class srLearningProgressLookupStatusTableGUI extends ilTable2GUI {
 		$this->setDisableFilterHiding(true);
 		$this->setEnableNumInfo(true);
 
-		$this->setIgnoredCols(array(''));
+		$this->setIgnoredCols(array( '' ));
 		$this->setTitle(sprintf($this->pl->txt('title_search_users'), ilObject::_lookupTitle(ilObject::_lookupObjectId($this->ref_id))));
 		$this->setEnableHeader(false);
 
@@ -79,9 +76,9 @@ class srLearningProgressLookupStatusTableGUI extends ilTable2GUI {
 		$this->initFilter();
 		$this->addColumns();
 
-        if (!in_array($parent_cmd, array('applyFilter', 'resetFilter'))) {
-            $this->parseData();
-        }
+		if (!in_array($parent_cmd, array( 'applyFilter', 'resetFilter' ))) {
+			$this->parseData();
+		}
 	}
 
 
@@ -102,9 +99,9 @@ class srLearningProgressLookupStatusTableGUI extends ilTable2GUI {
 		// load users
 		$options = array(
 			'filters' => $this->filter,
-			'limit' => array(),
-			'count' => true,
-			'sort' => array( 'field' => $this->getOrderField(), 'direction' => $this->getOrderDirection() ),
+			'limit'   => array(),
+			'count'   => true,
+			'sort'    => array( 'field' => $this->getOrderField(), 'direction' => $this->getOrderDirection() ),
 		);
 		$count = srLearningProgressLookupModel::getCourseUsers($this->ref_id, $options);
 
@@ -115,9 +112,9 @@ class srLearningProgressLookupStatusTableGUI extends ilTable2GUI {
 		// load modules and progress
 		$options = array(
 			'filters' => $this->filter,
-			'limit' => array( 'start' => (int)$this->getOffset(), 'end' => (int)$this->getLimit() ),
-			'count' => false,
-			'sort' => array( 'field' => $this->getOrderField(), 'direction' => $this->getOrderDirection() ),
+			'limit'   => array( 'start' => (int)$this->getOffset(), 'end' => (int)$this->getLimit() ),
+			'count'   => false,
+			'sort'    => array( 'field' => $this->getOrderField(), 'direction' => $this->getOrderDirection() ),
 		);
 
 		$module_data = srLearningProgressLookupModel::getCourseModules($this->ref_id, $options);
@@ -139,6 +136,7 @@ class srLearningProgressLookupStatusTableGUI extends ilTable2GUI {
 
 		$this->setData($rows);
 	}
+
 
 	public function initFilter() {
 		global $ilUser;
@@ -162,11 +160,12 @@ class srLearningProgressLookupStatusTableGUI extends ilTable2GUI {
 	public function getTableColumns() {
 		$cols = array();
 
-		$cols['title'] = array( 'txt' => $this->pl->txt('title'), 'default' => true, 'width' => 'auto');
-		$cols['status'] = array( 'txt' => $this->pl->txt('status'), 'default' => true, 'width' => 'auto');
+		$cols['title'] = array( 'txt' => $this->pl->txt('title'), 'default' => true, 'width' => 'auto' );
+		$cols['status'] = array( 'txt' => $this->pl->txt('status'), 'default' => true, 'width' => 'auto' );
 
 		return $cols;
 	}
+
 
 	public function getSelectableColumns() {
 		return array();
@@ -176,12 +175,12 @@ class srLearningProgressLookupStatusTableGUI extends ilTable2GUI {
 	private function addColumns() {
 		foreach ($this->getTableColumns() as $k => $v) {
 			//if ($this->isColumnSelected($k)) {
-				if (isset($v['sort_field'])) {
-					$sort = $v['sort_field'];
-				} else {
-					$sort = NULL;
-				}
-				$this->addColumn($v['txt'], $sort, $v['width']);
+			if (isset($v['sort_field'])) {
+				$sort = $v['sort_field'];
+			} else {
+				$sort = null;
+			}
+			$this->addColumn($v['txt'], $sort, $v['width']);
 			//}
 		}
 	}
@@ -233,7 +232,7 @@ class srLearningProgressLookupStatusTableGUI extends ilTable2GUI {
 		$this->tpl->setVariable('STATUS', $this->pl->txt('status_title'));
 		$this->tpl->parseCurrentBlock();
 
-		if(count($a_set['modules']) > 0) {
+		if (count($a_set['modules']) > 0) {
 			$odd = true;
 			foreach ($a_set['modules'] as $key => $module) {
 				$this->tpl->setCurrentBlock('module_tr');
@@ -262,8 +261,8 @@ class srLearningProgressLookupStatusTableGUI extends ilTable2GUI {
 
 	/**
 	 * @param object $a_worksheet
-	 * @param int    $a_row
-	 * @param array  $a_set
+	 * @param int $a_row
+	 * @param array $a_set
 	 */
 	protected function fillRowExcel($a_worksheet, &$a_row, $a_set) {
 		$col = 0;
@@ -279,26 +278,25 @@ class srLearningProgressLookupStatusTableGUI extends ilTable2GUI {
 		}
 	}
 
-	protected function fillHeaderExcel($worksheet, &$a_row)
-	{
+
+	protected function fillHeaderExcel($worksheet, &$a_row) {
 		$col = 0;
-		foreach ($this->getSelectableColumns() as $column_key => $column)
-		{
+		foreach ($this->getSelectableColumns() as $column_key => $column) {
 			$title = strip_tags($column["txt"]);
-			if(!in_array($column_key, $this->getIgnoredCols()) && $title != '')
-			{
+			if (!in_array($column_key, $this->getIgnoredCols()) && $title != '') {
 				if ($this->isColumnSelected($column_key)) {
 					$worksheet->write($a_row, $col, $title);
-					$col++;
+					$col ++;
 				}
 			}
 		}
-		$a_row++;
+		$a_row ++;
 	}
+
 
 	/**
 	 * @param object $a_csv
-	 * @param array  $a_set
+	 * @param array $a_set
 	 */
 	protected function fillRowCSV($a_csv, $a_set) {
 
@@ -352,6 +350,7 @@ class srLearningProgressLookupStatusTableGUI extends ilTable2GUI {
 	public function getIgnoredCols() {
 		return $this->ignored_cols;
 	}
+
 
 	/**
 	 * @param boolean $default_filter

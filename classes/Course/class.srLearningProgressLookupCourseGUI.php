@@ -7,7 +7,7 @@ require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHoo
 /**
  * GUI-Class Table srLearningProgressLookupCourseGUI
  *
- * @author Michael Herren <mh@studer-raimann.ch>
+ * @author            Michael Herren <mh@studer-raimann.ch>
  *
  * @ilCtrl_IsCalledBy srLearningProgressLookupCourseGUI: ilLearningProgressLookupGUI
  */
@@ -16,12 +16,10 @@ class srLearningProgressLookupCourseGUI {
 	const CMD_DEFAULT = 'index';
 	const CMD_RESET_FILTER = 'resetFilter';
 	const CMD_APPLY_FILTER = 'applyFilter';
-
 	/**
 	 * @var  ilTable2GUI
 	 */
 	protected $table;
-
 	protected $tpl;
 	protected $ctrl;
 	protected $pl;
@@ -33,8 +31,8 @@ class srLearningProgressLookupCourseGUI {
 	function __construct() {
 		global $tpl, $ilCtrl, $ilAccess, $lng, $ilToolbar, $ilTabs;
 		/**
-		 * @var ilTemplate      $tpl
-		 * @var ilCtrl          $ilCtrl
+		 * @var ilTemplate $tpl
+		 * @var ilCtrl $ilCtrl
 		 * @var ilAccessHandler $ilAccess
 		 */
 		$this->pl = ilLearningProgressLookupPlugin::getInstance();
@@ -49,7 +47,7 @@ class srLearningProgressLookupCourseGUI {
 
 
 	protected function checkAccessOrFail() {
-		if($this->access->hasCurrentUserViewPermission()) {
+		if ($this->access->hasCurrentUserViewPermission()) {
 			return true;
 		}
 
@@ -76,7 +74,7 @@ class srLearningProgressLookupCourseGUI {
 		}
 
 		$content = $this->table->getHTML();
-		$content .= '<div class="lookup_legend">'.$this->__getLegendHTML().'</div>';
+		$content .= '<div class="lookup_legend">' . $this->__getLegendHTML() . '</div>';
 
 		$this->tpl->setContent($content);
 	}
@@ -84,21 +82,21 @@ class srLearningProgressLookupCourseGUI {
 
 	public function index() {
 		//$this->toolbar->addButton($this->pl->txt('new_role'), $this->ctrl->getLinkTargetByClass("ilTrainingProgramRoleGUI", 'newRole'));
-        $this->table = new srLearningProgressLookupCourseTableGUI($this);
+		$this->table = new srLearningProgressLookupCourseTableGUI($this);
 		$this->tpl->setContent($this->table->getHTML());
 	}
 
 
 	public function applyFilter() {
-        $this->table = new srLearningProgressLookupCourseTableGUI($this, self::CMD_APPLY_FILTER);
-        $this->table->writeFilterToSession();
+		$this->table = new srLearningProgressLookupCourseTableGUI($this, self::CMD_APPLY_FILTER);
+		$this->table->writeFilterToSession();
 		$this->table->resetOffset();
 		$this->index();
 	}
 
 
 	public function resetFilter() {
-        $this->table = new srLearningProgressLookupCourseTableGUI($this, self::CMD_RESET_FILTER);
+		$this->table = new srLearningProgressLookupCourseTableGUI($this, self::CMD_RESET_FILTER);
 		$this->table->resetOffset();
 		$this->table->resetFilter();
 		$this->index();
@@ -109,19 +107,16 @@ class srLearningProgressLookupCourseGUI {
 		$this->ctrl->redirect($this);
 	}
 
+
 	public function __getLegendHTML() {
 		$tpl = new ilTemplate("tpl.offline_legend.html", true, true, "./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/LearningProgressLookup");
-		$tpl->setVariable("IMG_COMPLETED",
-			ilUtil::getImagePath("scorm/completed.png"));
-		$tpl->setVariable("IMG_FAILED",
-			ilUtil::getImagePath("scorm/failed.png"));
-		$tpl->setVariable("TXT_COMPLETED",
-			$this->pl->txt("online_status_1"));
-		$tpl->setVariable("TXT_FAILED",
-			$this->pl->txt("online_status_0"));
+		$tpl->setVariable("IMG_COMPLETED", ilUtil::getImagePath("scorm/completed.png"));
+		$tpl->setVariable("IMG_FAILED", ilUtil::getImagePath("scorm/failed.png"));
+		$tpl->setVariable("TXT_COMPLETED", $this->pl->txt("online_status_1"));
+		$tpl->setVariable("TXT_FAILED", $this->pl->txt("online_status_0"));
+
 		return $tpl->get();
 	}
-
 }
 
 ?>
