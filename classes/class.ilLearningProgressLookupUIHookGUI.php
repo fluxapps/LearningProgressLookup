@@ -10,6 +10,7 @@ require_once('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHoo
  * @version 1.0.0
  */
 class ilLearningProgressLookupUIHookGUI extends ilUIHookPluginGUI {
+
 	/**
 	 * @param       $a_comp
 	 * @param       $a_part

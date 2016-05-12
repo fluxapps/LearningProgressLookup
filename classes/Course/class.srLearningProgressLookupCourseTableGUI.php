@@ -24,19 +24,16 @@ class srLearningProgressLookupCourseTableGUI extends ilTable2GUI {
 	/** @var  array $filter */
 	protected $filter = array();
 	protected $access;
-
 	protected $ignored_cols;
-
-	/** @var bool  */
-	protected  $show_default_filter = false;
-
-	/** @var array  */
-	protected  $numeric_fields = array("course_id");
+	/** @var bool */
+	protected $show_default_filter = false;
+	/** @var array */
+	protected $numeric_fields = array( "course_id" );
 
 
 	/**
-	 * @param srLearningProgressLookupCourseGUI  $parent_obj
-	 * @param string                        $parent_cmd
+	 * @param srLearningProgressLookupCourseGUI $parent_obj
+	 * @param string $parent_cmd
 	 */
 	public function __construct($parent_obj, $parent_cmd = "index") {
 		/** @var $ilCtrl ilCtrl */
@@ -48,7 +45,7 @@ class srLearningProgressLookupCourseTableGUI extends ilTable2GUI {
 		$this->access = $this->pl->getAccessManager();
 		$this->toolbar = $ilToolbar;
 
-		if(!$ilCtrl->getCmd()) {
+		if (!$ilCtrl->getCmd()) {
 			$this->setShowDefaultFilter(true);
 		}
 
@@ -69,19 +66,18 @@ class srLearningProgressLookupCourseTableGUI extends ilTable2GUI {
 		$this->setDisableFilterHiding(true);
 		$this->setEnableNumInfo(true);
 
-		$this->setIgnoredCols(array(''));
+		$this->setIgnoredCols(array( '' ));
 		$this->setTitle($this->pl->txt('title_search_course'));
 
 		$this->initFilter();
 		$this->addColumns();
-        if (!in_array($parent_cmd, array('applyFilter', 'resetFilter'))) {
-            $this->parseData();
-        }
+		if (!in_array($parent_cmd, array( 'applyFilter', 'resetFilter' ))) {
+			$this->parseData();
+		}
 	}
 
 
 	protected function parseData() {
-		global $ilUser;
 		$this->setExternalSorting(true);
 		$this->setExternalSegmentation(true);
 		$this->setDefaultOrderField($this->columns[0]);
@@ -91,9 +87,9 @@ class srLearningProgressLookupCourseTableGUI extends ilTable2GUI {
 
 		$options = array(
 			'filters' => $this->filter,
-			'limit' => array(),
-			'count' => true,
-			'sort' => array( 'field' => $this->getOrderField(), 'direction' => $this->getOrderDirection() ),
+			'limit'   => array(),
+			'count'   => true,
+			'sort'    => array( 'field' => $this->getOrderField(), 'direction' => $this->getOrderDirection() ),
 		);
 		$count = srLearningProgressLookupModel::getCourses($options);
 
@@ -114,6 +110,7 @@ class srLearningProgressLookupCourseTableGUI extends ilTable2GUI {
 		$this->setData($rows);
 	}
 
+
 	public function initFilter() {
 		// Course
 		$item = new ilTextInputGUI($this->pl->txt('course_title'), 'course_title');
@@ -122,12 +119,18 @@ class srLearningProgressLookupCourseTableGUI extends ilTable2GUI {
 		$this->filter['obj.title'] = $item->getValue();
 	}
 
+
 	public function getTableColumns() {
 		$cols = array();
 
-		$cols['course_title'] = array( 'txt' => $this->pl->txt('table_label_title'), 'default' => true, 'width' => 'auto', 'sort_field' => 'course_title' );
-		$cols['path'] = array( 'txt' => $this->pl->txt('table_label_path'), 'default' => true, 'width' => 'auto');
-		$cols['online'] = array( 'txt' => $this->pl->txt('table_label_online'), 'default' => true, 'width' => 'auto');
+		$cols['course_title'] = array(
+			'txt'        => $this->pl->txt('table_label_title'),
+			'default'    => true,
+			'width'      => 'auto',
+			'sort_field' => 'course_title',
+		);
+		$cols['path'] = array( 'txt' => $this->pl->txt('table_label_path'), 'default' => true, 'width' => 'auto' );
+		$cols['online'] = array( 'txt' => $this->pl->txt('table_label_online'), 'default' => true, 'width' => 'auto' );
 
 		return $cols;
 	}
@@ -144,15 +147,15 @@ class srLearningProgressLookupCourseTableGUI extends ilTable2GUI {
 	private function addColumns() {
 		foreach ($this->getTableColumns() as $k => $v) {
 			//if ($this->isColumnSelected($k)) {
-				if (isset($v['sort_field'])) {
-					$sort = $v['sort_field'];
-				} else {
-					$sort = NULL;
-				}
-				$this->addColumn($v['txt'], $sort, $v['width']);
+			if (isset($v['sort_field'])) {
+				$sort = $v['sort_field'];
+			} else {
+				$sort = null;
+			}
+			$this->addColumn($v['txt'], $sort, $v['width']);
 			//}
 		}
-		$this->addColumn($this->pl->txt('table_label_action'));
+		$this->addColumn($this->pl->txt('table_label_action'), '', '150px', 'text-right');
 	}
 
 
@@ -194,43 +197,42 @@ class srLearningProgressLookupCourseTableGUI extends ilTable2GUI {
 	 */
 	public function fillRow($a_set) {
 		foreach ($this->getTableColumns() as $k => $v) {
-				switch($k) {
-					case 'online':
+			switch ($k) {
+				case 'online':
+					$this->tpl->setCurrentBlock('td');
+					$this->tpl->setVariable('VALUE', ilUtil::img(srLearningProgressLookupModel::getOfflineStatusImageTag($a_set['online']), $this->pl->txt("online_status_"
+					                                                                                                                                       . $a_set['online'], 18)));
+					$this->tpl->parseCurrentBlock();
+					break;
+				default:
+					if ($a_set[$k] != '') {
 						$this->tpl->setCurrentBlock('td');
-						$this->tpl->setVariable('VALUE', ilUtil::img(srLearningProgressLookupModel::getOfflineStatusImageTag($a_set['online']), $this->pl->txt("online_status_".$a_set['online'], 18)));
+						$this->tpl->setVariable('VALUE', (is_array($a_set[$k]) ? implode(", ", $a_set[$k]) : $a_set[$k]));
 						$this->tpl->parseCurrentBlock();
-						break;
-					default:
-						if ($a_set[$k] != '') {
-							$this->tpl->setCurrentBlock('td');
-							$this->tpl->setVariable('VALUE', (is_array($a_set[$k]) ? implode(", ", $a_set[$k]) : $a_set[$k]));
-							$this->tpl->parseCurrentBlock();
-						} else {
-							$this->tpl->setCurrentBlock('td');
-							$this->tpl->setVariable('VALUE', '&nbsp;');
-							$this->tpl->parseCurrentBlock();
-						}
-						break;
-				}
+					} else {
+						$this->tpl->setCurrentBlock('td');
+						$this->tpl->setVariable('VALUE', '&nbsp;');
+						$this->tpl->parseCurrentBlock();
+					}
+					break;
+			}
 		}
 
-
 		$this->ctrl->setParameterByClass('srlearningprogresslookupstatusgui', 'course_ref_id', $a_set['ref_id']);
-        $link_target = $this->ctrl->getLinkTargetByClass('srlearningprogresslookupstatusgui');
+		$link_target = $this->ctrl->getLinkTargetByClass('srlearningprogresslookupstatusgui');
 
 		$this->tpl->setCurrentBlock("cmd");
 		$this->tpl->setVariable("CMD", $link_target);
 		$this->tpl->setVariable("CMD_TXT", $this->pl->txt('table_label_lookup'));
 		$this->tpl->parseCurrentBlock();
-
 		//$this->tpl->setVariable('ACTIONS', '&nbsp;');
 	}
 
 
 	/**
 	 * @param object $a_worksheet
-	 * @param int    $a_row
-	 * @param array  $a_set
+	 * @param int $a_row
+	 * @param array $a_set
 	 */
 	protected function fillRowExcel($a_worksheet, &$a_row, $a_set) {
 		$col = 0;
@@ -246,26 +248,25 @@ class srLearningProgressLookupCourseTableGUI extends ilTable2GUI {
 		}
 	}
 
-	protected function fillHeaderExcel($worksheet, &$a_row)
-	{
+
+	protected function fillHeaderExcel($worksheet, &$a_row) {
 		$col = 0;
-		foreach ($this->getSelectableColumns() as $column_key => $column)
-		{
+		foreach ($this->getSelectableColumns() as $column_key => $column) {
 			$title = strip_tags($column["txt"]);
-			if(!in_array($column_key, $this->getIgnoredCols()) && $title != '')
-			{
+			if (!in_array($column_key, $this->getIgnoredCols()) && $title != '') {
 				if ($this->isColumnSelected($column_key)) {
 					$worksheet->write($a_row, $col, $title);
-					$col++;
+					$col ++;
 				}
 			}
 		}
-		$a_row++;
+		$a_row ++;
 	}
+
 
 	/**
 	 * @param object $a_csv
-	 * @param array  $a_set
+	 * @param array $a_set
 	 */
 	protected function fillRowCSV($a_csv, $a_set) {
 
@@ -319,6 +320,7 @@ class srLearningProgressLookupCourseTableGUI extends ilTable2GUI {
 	public function getIgnoredCols() {
 		return $this->ignored_cols;
 	}
+
 
 	/**
 	 * @param boolean $default_filter

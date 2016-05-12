@@ -10,12 +10,12 @@ form[name=xlpl_status_table] .ilTableOuter {
 	background: none !important;
 }
 
-#xlpl_status .title_line td {
-	padding: 30px 0 7px 0;
+#xlpl_status .title_line {
+	font-weight: bold;
 }
 
 #xlpl_status tr:first-child > td {
-	padding: 0px 0 7px 0 !important;
+	/*padding: 0px 0 7px 0 !important;*/
 }
 
 #xlpl_status .status_user {

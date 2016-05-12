@@ -11,10 +11,10 @@ require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHoo
  *
  */
 class ilLearningProgressLookupPlugin extends ilUserInterfaceHookPlugin {
+
 	//const CRONJOB_AUTH_TOKEN = "8d641029d094c05947ed9b3566d5b959cc643136";
 
 	protected static $instance;
-
 	protected $access;
 
 
@@ -47,9 +47,10 @@ class ilLearningProgressLookupPlugin extends ilUserInterfaceHookPlugin {
 	 * @return ilLearningProgressLookupAccess
 	 */
 	public function getAccessManager() {
-		if(is_null($this->access)) {
+		if (is_null($this->access)) {
 			$this->access = new ilLearningProgressLookupAccess();
 		}
+
 		return $this->access;
 	}
 
@@ -84,7 +85,6 @@ class ilLearningProgressLookupPlugin extends ilUserInterfaceHookPlugin {
 			}
 		}
 	}
-
 	/*public function execCronjob(array $tasks = array()) {
 		global $ilLog;
 		$ilLog->write("ilTrainingProgram-Cron: Start");

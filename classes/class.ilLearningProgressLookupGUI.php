@@ -7,7 +7,7 @@ require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHoo
 /**
  * GUI-Class ilLearningProgressLookupGUI
  *
- * @author Michael Herren <mh@studer-raimann.ch>
+ * @author            Michael Herren <mh@studer-raimann.ch>
  * @version           $Id:
  *
  * @ilCtrl_IsCalledBy ilLearningProgressLookupGUI: ilRouterGUI, ilUIPluginRouterGUI
@@ -17,12 +17,12 @@ require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHoo
 class ilLearningProgressLookupGUI {
 
 	const RELOAD_LANGUAGES = false;
-
 	protected $tpl;
 	protected $ctrl;
 	protected $tabs;
 	protected $lng;
 	protected $access;
+
 
 	public function __construct() {
 		global $tpl, $ilCtrl, $ilTabs, $lng;
@@ -45,13 +45,14 @@ class ilLearningProgressLookupGUI {
 
 	public function executeCommand() {
 		$cmd = $this->ctrl->getCmd();
-
+		$this->tpl->getStandardTemplate();
 		$this->tpl->addCss($this->pl->getStyleSheetLocation("default/learning_progress_lookup.css"));
 
 		$next_class = $this->ctrl->getNextClass($this);
-		if (! $this->accessCheck($next_class)) {
+		if (!$this->accessCheck($next_class)) {
 			ilUtil::sendFailure($this->lng->txt("no_permission"), true);
 			ilUtil::redirect("");
+
 			return false;
 		}
 
@@ -72,6 +73,8 @@ class ilLearningProgressLookupGUI {
 				break;
 		}
 
+		$this->tpl->show();
+
 		return true;
 	}
 
@@ -84,9 +87,9 @@ class ilLearningProgressLookupGUI {
 				return $this->access->hasCurrentUserViewPermission();
 				break;
 		}
+
 		return false;
 	}
-
 }
 
 ?>
