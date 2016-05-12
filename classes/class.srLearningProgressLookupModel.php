@@ -2,6 +2,7 @@
 
 require_once('./Services/Tracking/classes/collection/class.ilLPCollectionOfRepositoryObjects.php');
 require_once('./Services/Tracking/classes/class.ilLearningProgressBaseGUI.php');
+require_once('./Services/Tracking/classes/class.ilLPObjSettings.php');
 
 /**
  * Class srLearningProgressCourseModel
