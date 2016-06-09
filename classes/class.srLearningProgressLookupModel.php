@@ -85,12 +85,12 @@ class srLearningProgressLookupModel {
 			$sql = 'SELECT usr_id, login, firstname, lastname, last_login ';
 		}
 
-		$sql .= "FROM usr_data WHERE usr_data.usr_id <> " . ANONYMOUS_USER_ID . " " . "AND usr_data.usr_id IN (SELECT DISTINCT ud.usr_id "
+		$sql .= " FROM usr_data WHERE usr_data.usr_id <> " . ANONYMOUS_USER_ID . " " . " AND usr_data.usr_id IN (SELECT DISTINCT ud.usr_id "
 		        . "FROM usr_data ud join rbac_ua ON (ud.usr_id = rbac_ua.usr_id) " . "JOIN object_data od ON (rbac_ua.rol_id = od.obj_id) "
 		        . "WHERE od.title LIKE 'il_crs_%_" . $ilDB->quote($course_ref_id) . "') ";
 
 		if ($options['count']) {
-			$sql .= "GROUP BY usr_id";
+			$sql .= " GROUP BY usr_id ";
 		}
 
 		if (strpos($options['filters']['login'], ',') !== false) {
@@ -260,7 +260,7 @@ class srLearningProgressLookupModel {
 	 * @param string $op
 	 * @return string
 	 */
-	public static function parseWhereQuery($filters, $valid_params = false, $first = false, $op = "AND") {
+	public static function parseWhereQuery($filters, $valid_params = false, $first = false, $op = " AND ") {
 		global $ilDB;
 
 		// allow filtering with *
