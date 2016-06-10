@@ -3,6 +3,7 @@
 require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/LearningProgressLookup/classes/class.ilLearningProgressLookupPlugin.php");
 require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/LearningProgressLookup/classes/Course/class.srLearningProgressLookupCourseTableGUI.php");
 require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/LearningProgressLookup/classes/class.srLearningProgressLookupModel.php");
+require_once('./Services/Object/classes/class.ilObjectLP.php');
 
 /**
  * GUI-Class Table srLearningProgressLookupCourseGUI
