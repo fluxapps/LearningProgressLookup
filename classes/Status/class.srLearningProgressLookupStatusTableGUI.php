@@ -238,6 +238,7 @@ class srLearningProgressLookupStatusTableGUI extends ilTable2GUI {
 				$this->tpl->setCurrentBlock('module_tr');
 
 				$css_class = "status_list_entry ";
+				$css_class = "";
 				$css_class .= ($odd) ? "odd " : "even ";
 				$css_class .= ($module['offline']) ? "offline" : "";
 				$this->tpl->setVariable('CSS_CLASS', $css_class);
