@@ -245,7 +245,7 @@ class srLearningProgressLookupStatusTableGUI extends ilTable2GUI {
 				$this->tpl->setVariable('COURSE', ilUtil::img($module['icon'], "", 22) . $module['title']);
 
 				$status = $a_set['user_progresses'][$module['obj_id']]['status'];
-				$this->tpl->setVariable('STATUS', ilUtil::img(srLearningProgressLookupModel::getProgressStatusImageTag($status), srLearningProgressLookupModel::getProgressStatusRepresentation($status), 18));
+				$this->tpl->setVariable('STATUS', ilUtil::img(srLearningProgressLookupModel::getProgressStatusImageTag($status), srLearningProgressLookupModel::getProgressStatusRepresentation($status), 18, 18));
 				$this->tpl->parseCurrentBlock();
 				$odd = !$odd;
 			}
