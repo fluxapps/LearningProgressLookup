@@ -1,0 +1,28 @@
+{
+  "support": {
+    "email": "info@studer-raimann.ch"
+  },
+  "minimum-stability": "beta",
+  "prefer-stable": true,
+  "require": {
+    "php": "^7.0",
+    "srag/dic": ">=0.1.0"
+  },
+  "autoload": {
+    "classmap": [
+      "./classes/",
+      "../../../../../../../Services/Form",
+      "../../../../../../../Services/Object",
+      "../../../../../../../Services/Table",
+      "../../../../../../../Services/Tracking",
+      "../../../../../../../Services/Component",
+      "../../../../../../../Services/UIComponent",
+      "../../../../../../../Services/ActiveRecord"
+    ]
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true,
+    "classmap-authoritative": true
+  }
+}

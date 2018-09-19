@@ -1,7 +1,6 @@
 <?php
-
-require_once("./Services/UIComponent/classes/class.ilUserInterfaceHookPlugin.php");
-require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/LearningProgressLookup/classes/class.ilLearningProgressLookupAccess.php");
+require_once __DIR__ . "/../vendor/autoload.php";
+use srag\DIC\DICTrait;
 
 /**
  * ilLearningProgressLookupPlugin
@@ -12,10 +11,14 @@ require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHoo
  */
 class ilLearningProgressLookupPlugin extends ilUserInterfaceHookPlugin {
 
-	//const CRONJOB_AUTH_TOKEN = "8d641029d094c05947ed9b3566d5b959cc643136";
+    use DICTrait;
 
-	protected static $instance;
-	protected $access;
+    const PLUGIN_CLASS_NAME = ilLearningProgressLookupPlugin::class;
+
+    //const CRONJOB_AUTH_TOKEN = "8d641029d094c05947ed9b3566d5b959cc643136";
+
+    protected static $instance;
+    protected $access;
 
 
 	/**
@@ -30,7 +33,10 @@ class ilLearningProgressLookupPlugin extends ilUserInterfaceHookPlugin {
 	}
 
 
-	public function init() {
+    /**
+     * @throws Exception
+     */
+    public function init() {
 		self::loadActiveRecord();
 	}
 
@@ -86,7 +92,8 @@ class ilLearningProgressLookupPlugin extends ilUserInterfaceHookPlugin {
 		}
 	}
 	/*public function execCronjob(array $tasks = array()) {
-		global $ilLog;
+		global $DIC;
+		$ilLog = $DIC['ilLog'];
 		$ilLog->write("ilTrainingProgram-Cron: Start");
 		$ch = curl_init();
 

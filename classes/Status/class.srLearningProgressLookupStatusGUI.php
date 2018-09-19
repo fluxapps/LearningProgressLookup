@@ -1,10 +1,5 @@
 <?php
-
-require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/LearningProgressLookup/classes/class.ilLearningProgressLookupPlugin.php");
-require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/LearningProgressLookup/classes/Status/class.srLearningProgressLookupStatusTableGUI.php");
-require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/LearningProgressLookup/classes/class.srLearningProgressLookupModel.php");
-
-require_once("./Services/Tracking/classes/class.ilLearningProgressBaseGUI.php");
+use srag\DIC\DICTrait;
 
 /**
  * GUI-Class Table srLearningProgressLookupStatusGUI
@@ -15,6 +10,9 @@ require_once("./Services/Tracking/classes/class.ilLearningProgressBaseGUI.php");
  */
 class srLearningProgressLookupStatusGUI {
 
+    use DICTrait;
+    const PLUGIN_CLASS_NAME = ilLearningProgressLookupPlugin::class;
+
 	const CMD_DEFAULT = 'index';
 	const CMD_RESET_FILTER = 'resetFilter';
 	const CMD_APPLY_FILTER = 'applyFilter';
@@ -22,45 +20,31 @@ class srLearningProgressLookupStatusGUI {
 	 * @var  ilTable2GUI
 	 */
 	protected $table;
-	protected $tpl;
-	protected $ctrl;
-	protected $pl;
-	protected $toolbar;
-	protected $tabs;
-	protected $access;
-	protected $lng;
+
 	protected $ref_id;
 
 
-	function __construct() {
+    /**
+     * srLearningProgressLookupStatusGUI constructor.
+     * @throws ilException
+     */
+    function __construct() {
 		if (!isset($_GET['course_ref_id'])) {
 			throw new ilException("No course ref-ID set!");
 		}
 
-		global $tpl, $ilCtrl, $ilAccess, $lng, $ilToolbar, $ilTabs;
-		/**
-		 * @var ilTemplate $tpl
-		 * @var ilCtrl $ilCtrl
-		 * @var ilAccessHandler $ilAccess
-		 * @var ilToolbarGUI $ilToolbar ;
-		 * @var ilTabsGUI $ilTabs       ;
-		 */
-		$this->pl = ilLearningProgressLookupPlugin::getInstance();
-		$this->tpl = $tpl;
-		$this->ctrl = $ilCtrl;
-		$this->toolbar = $ilToolbar;
-		$this->tabs = $ilTabs;
-		$this->lng = $lng;
-		$this->access = $this->pl->getAccessManager();
-
 		$this->ref_id = (int)$_GET['course_ref_id'];
 
-		$this->tpl->setTitle($this->pl->txt('plugin_title'));
+		self::dic()->template()->setTitle(self::plugin()->translate('plugin_title'));
 	}
 
 
-	protected function checkAccessOrFail() {
-		if ($this->access->hasCurrentUserViewPermission() && $this->access->hasCurrentUserStatusPermission($this->ref_id)) {
+    /**
+     * @return bool
+     * @throws ilException
+     */
+    protected function checkAccessOrFail() {
+		if (self::plugin()->getPluginObject()->getAccessManager()->hasCurrentUserViewPermission() && self::plugin()->getPluginObject()->getAccessManager()->hasCurrentUserStatusPermission($this->ref_id)) {
 			return true;
 		}
 
@@ -68,19 +52,22 @@ class srLearningProgressLookupStatusGUI {
 	}
 
 
-	public function executeCommand() {
-		$cmd = $this->ctrl->getCmd();
+    /**
+     * @throws ilException
+     */
+    public function executeCommand() {
+		$cmd = self::dic()->ctrl()->getCmd();
 
 		$this->checkAccessOrFail();
 
-		$this->ctrl->saveParameter($this, 'course_ref_id');
+		self::dic()->ctrl()->saveParameter($this, 'course_ref_id');
 
-		$this->tpl->getStandardTemplate();
+		self::dic()->template()->getStandardTemplate();
 
-		$this->tabs->clearTargets();
-		$this->tabs->tabs = null;
-		/*$this->tabs->addTab("status_gui", sprintf($this->pl->txt('title_search_users'), ilObject::_lookupTitle(ilObject::_lookupObjectId($this->ref_id))), $this->ctrl->getLinkTarget($this));*/
-		$this->tabs->setBackTarget($this->pl->txt('back_to_course_search'), $this->ctrl->getLinkTargetByClass(array(
+		self::dic()->tabs()->clearTargets();
+		self::dic()->tabs()->tabs = null;
+		/*self::dic()->tabs()->addTab("status_gui", sprintf(self::plugin()->translate('title_search_users'), ilObject::_lookupTitle(ilObject::_lookupObjectId($this->ref_id))), self::dic()->ctrl()->getLinkTarget($this));*/
+		self::dic()->tabs()->setBackTarget(self::plugin()->translate('back_to_course_search'), self::dic()->ctrl()->getLinkTargetByClass(array(
 			'illearningprogresslookupgui',
 			'srlearningprogresslookupcoursegui',
 		)));
@@ -98,20 +85,25 @@ class srLearningProgressLookupStatusGUI {
 		$content = $this->table->getHTML();
 
 		// display legend
-		$this->lng->loadLanguageModule('trac');
+		self::dic()->language()->loadLanguageModule('trac');
 		$content .= '<div class="lookup_legend">' . ilLearningProgressBaseGUI::__getLegendHTML() . '</div>';
 
-		$this->tpl->setContent($content);
+		self::dic()->template()->setContent($content);
 	}
 
 
-	public function index() {
+    /**
+     *
+     */
+    public function index() {
 		$this->table = new srLearningProgressLookupStatusTableGUI($this, $this->getRefId());
-		$this->tpl->setContent($this->table->getHTML());
 	}
 
 
-	public function applyFilter() {
+    /**
+     *
+     */
+    public function applyFilter() {
 		$this->table = new srLearningProgressLookupStatusTableGUI($this, $this->getRefId(), self::CMD_APPLY_FILTER);
 		$this->table->writeFilterToSession();
 		$this->table->resetOffset();
@@ -119,7 +111,10 @@ class srLearningProgressLookupStatusGUI {
 	}
 
 
-	public function resetFilter() {
+    /**
+     *
+     */
+    public function resetFilter() {
 		$this->table = new srLearningProgressLookupStatusTableGUI($this, $this->getRefId(), self::CMD_RESET_FILTER);
 		$this->table->resetOffset();
 		$this->table->resetFilter();
@@ -127,8 +122,11 @@ class srLearningProgressLookupStatusGUI {
 	}
 
 
-	public function cancel() {
-		$this->ctrl->redirect($this);
+    /**
+     *
+     */
+    public function cancel() {
+		self::dic()->ctrl()->redirect($this);
 	}
 
 
