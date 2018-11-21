@@ -1,11 +1,11 @@
 <?php
 
-namespace srag\DIC\DIC;
+namespace srag\DIC\LearningProgressLookup\DIC;
 
 /**
  * Class AbstractDIC
  *
- * @package srag\DIC\DIC
+ * @package srag\DIC\LearningProgressLookup\DIC
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */

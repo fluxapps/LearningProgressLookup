@@ -1,6 +1,6 @@
 <?php
 
-namespace srag\DIC\DIC;
+namespace srag\DIC\LearningProgressLookup\DIC;
 
 use Collator;
 use ilAccess;
@@ -26,6 +26,7 @@ use ilLocatorGUI;
 use ilLog;
 use ilLoggerFactory;
 use ilMailMimeSenderFactory;
+use ilMailMimeTransportFactory;
 use ilMainMenuGUI;
 use ilNavigationHistory;
 use ilObjectDataCache;
@@ -42,12 +43,12 @@ use ilTemplate;
 use ilToolbarGUI;
 use ilTree;
 use Session;
-use srag\DIC\Exception\DICException;
+use srag\DIC\LearningProgressLookup\Exception\DICException;
 
 /**
  * Interface DICInterface
  *
- * @package srag\DIC\DIC
+ * @package srag\DIC\LearningProgressLookup\DIC
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
@@ -242,9 +243,27 @@ interface DICInterface {
 
 
 	/**
+	 * @return ilMailMimeTransportFactory
+	 *
+	 * @throws DICException ilMailMimeTransportFactory not exists in ILIAS 5.2 or below!
+	 *
+	 * @since ILIAS 5.3
+	 */
+	public function mailMimeTransportFactory()/*: ilMailMimeTransportFactory*/
+	;
+
+
+	/**
 	 * @return ilMainMenuGUI
 	 */
 	public function mainMenu()/*: ilMainMenuGUI*/
+	;
+
+
+	/**
+	 * @return ilTemplate Main ilTemplate instance
+	 */
+	public function mainTemplate()/*: ilTemplate*/
 	;
 
 
@@ -315,13 +334,6 @@ interface DICInterface {
 	 * @return ilTabsGUI
 	 */
 	public function tabs()/*: ilTabsGUI*/
-	;
-
-
-	/**
-	 * @return ilTemplate Main-Template
-	 */
-	public function template()/*: ilTemplate*/
 	;
 
 

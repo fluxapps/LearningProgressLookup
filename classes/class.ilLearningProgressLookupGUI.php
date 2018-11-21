@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . "/../vendor/autoload.php";
-use srag\DIC\DICTrait;
+use srag\DIC\LearningProgressLookup\DICTrait;
 
 /**
  * GUI-Class ilLearningProgressLookupGUI
@@ -23,7 +23,7 @@ class ilLearningProgressLookupGUI {
 
     /**
      * ilLearningProgressLookupGUI constructor.
-     * @throws \srag\DIC\Exception\DICException
+     * @throws \srag\DIC\LearningProgressLookup\Exception\DICException
      */
     public function __construct() {
 		if (self::RELOAD_LANGUAGES OR $_GET['rl'] == 'true') {
@@ -34,13 +34,13 @@ class ilLearningProgressLookupGUI {
 
     /**
      * @return bool
-     * @throws \srag\DIC\Exception\DICException
+     * @throws \srag\DIC\LearningProgressLookup\Exception\DICException
      * @throws ilCtrlException
      * @throws ilException
      */
     public function executeCommand() {
-		self::dic()->template()->getStandardTemplate();
-		self::dic()->template()->addCss(self::plugin()->getPluginObject()->getStyleSheetLocation("default/learning_progress_lookup.css"));
+		self::dic()->ui()->mainTemplate()->getStandardTemplate();
+		self::dic()->ui()->mainTemplate()->addCss(self::plugin()->getPluginObject()->getStyleSheetLocation("default/learning_progress_lookup.css"));
 
 		$next_class = self::dic()->ctrl()->getNextClass($this);
 		if (!$this->accessCheck($next_class)) {
@@ -67,7 +67,7 @@ class ilLearningProgressLookupGUI {
 				break;
 		}
 
-		self::dic()->template()->show();
+		self::dic()->ui()->mainTemplate()->show();
 
 		return true;
 	}
@@ -76,7 +76,7 @@ class ilLearningProgressLookupGUI {
     /**
      * @param $next_class
      * @return bool
-     * @throws \srag\DIC\Exception\DICException
+     * @throws \srag\DIC\LearningProgressLookup\Exception\DICException
      */
     protected function accessCheck($next_class) {
 		switch ($next_class) {

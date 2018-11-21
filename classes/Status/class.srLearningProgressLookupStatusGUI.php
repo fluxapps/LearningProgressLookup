@@ -1,5 +1,5 @@
 <?php
-use srag\DIC\DICTrait;
+use srag\DIC\LearningProgressLookup\DICTrait;
 
 /**
  * GUI-Class Table srLearningProgressLookupStatusGUI
@@ -35,7 +35,7 @@ class srLearningProgressLookupStatusGUI {
 
 		$this->ref_id = (int)$_GET['course_ref_id'];
 
-		self::dic()->template()->setTitle(self::plugin()->translate('plugin_title'));
+		self::dic()->ui()->mainTemplate()->setTitle(self::plugin()->translate('plugin_title'));
 	}
 
 
@@ -62,7 +62,7 @@ class srLearningProgressLookupStatusGUI {
 
 		self::dic()->ctrl()->saveParameter($this, 'course_ref_id');
 
-		self::dic()->template()->getStandardTemplate();
+		self::dic()->ui()->mainTemplate()->getStandardTemplate();
 
 		self::dic()->tabs()->clearTargets();
 		self::dic()->tabs()->tabs = null;
@@ -88,7 +88,7 @@ class srLearningProgressLookupStatusGUI {
 		self::dic()->language()->loadLanguageModule('trac');
 		$content .= '<div class="lookup_legend">' . ilLearningProgressBaseGUI::__getLegendHTML() . '</div>';
 
-		self::dic()->template()->setContent($content);
+		self::dic()->ui()->mainTemplate()->setContent($content);
 	}
 
 

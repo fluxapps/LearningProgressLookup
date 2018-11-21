@@ -1,6 +1,6 @@
 <?php
 
-namespace srag\DIC\Plugin;
+namespace srag\DIC\LearningProgressLookup\Plugin;
 
 use ilConfirmationGUI;
 use ilPlugin;
@@ -9,13 +9,13 @@ use ilTable2GUI;
 use ilTemplate;
 use ilTemplateException;
 use JsonSerializable;
-use srag\DIC\Exception\DICException;
+use srag\DIC\LearningProgressLookup\Exception\DICException;
 use stdClass;
 
 /**
  * Interface PluginInterface
  *
- * @package srag\DIC\Plugin
+ * @package srag\DIC\LearningProgressLookup\Plugin
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
@@ -92,6 +92,8 @@ interface PluginInterface {
 	 * Get ILIAS plugin object instance
 	 *
 	 * @return ilPlugin ILIAS plugin object instance
+	 *
+	 * @deprecated Please avoid to use ILIAS plugin object instance and instead use methods in this class!
 	 */
 	public function getPluginObject()/*: ilPlugin*/
 	;

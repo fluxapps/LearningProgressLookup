@@ -1,5 +1,5 @@
 <?php
-use srag\DIC\DICTrait;
+use srag\DIC\LearningProgressLookup\DICTrait;
 
 /**
  * Class srLearningProgressLookupCourseTableGUI
@@ -26,7 +26,7 @@ class srLearningProgressLookupStatusTableGUI extends ilTable2GUI {
      * @param $parent_obj
      * @param $ref_id
      * @param string $parent_cmd
-     * @throws \srag\DIC\Exception\DICException
+     * @throws \srag\DIC\LearningProgressLookup\Exception\DICException
      */
 	public function __construct($parent_obj, $ref_id, $parent_cmd = "index") {
 		$this->ref_id = $ref_id;
@@ -124,7 +124,7 @@ class srLearningProgressLookupStatusTableGUI extends ilTable2GUI {
 
 
     /**
-     * @throws \srag\DIC\Exception\DICException
+     * @throws \srag\DIC\LearningProgressLookup\Exception\DICException
      */
     public function initFilter() {
 		// Login

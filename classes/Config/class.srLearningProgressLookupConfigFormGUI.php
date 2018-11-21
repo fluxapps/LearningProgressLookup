@@ -1,5 +1,5 @@
 <?php
-use srag\DIC\DICTrait;
+use srag\DIC\LearningProgressLookup\DICTrait;
 
 /**
  * Class
@@ -139,7 +139,7 @@ class srLearningProgressLookupConfigFormGUI extends ilPropertyFormGUI {
 
 
     /**
-     * @throws \srag\DIC\Exception\DICException
+     * @throws \srag\DIC\LearningProgressLookup\Exception\DICException
      */
     protected function addCommandButtons() {
 		$this->addCommandButton('save', self::plugin()->translate('admin_form_button_save'));

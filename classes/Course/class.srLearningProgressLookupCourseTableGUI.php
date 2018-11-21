@@ -1,5 +1,5 @@
 <?php
-use srag\DIC\DICTrait;
+use srag\DIC\LearningProgressLookup\DICTrait;
 /**
  * Class srLearningProgressLookupCourseTableGUI
  *
@@ -24,7 +24,7 @@ class srLearningProgressLookupCourseTableGUI extends ilTable2GUI {
      * srLearningProgressLookupCourseTableGUI constructor.
      * @param $parent_obj
      * @param string $parent_cmd
-     * @throws \srag\DIC\Exception\DICException
+     * @throws \srag\DIC\LearningProgressLookup\Exception\DICException
      */
 	public function __construct($parent_obj, $parent_cmd = "index") {
 		if (!self::dic()->ctrl()->getCmd()) {
@@ -97,7 +97,7 @@ class srLearningProgressLookupCourseTableGUI extends ilTable2GUI {
 
 
     /**
-     * @throws \srag\DIC\Exception\DICException
+     * @throws \srag\DIC\LearningProgressLookup\Exception\DICException
      */
     public function initFilter() {
 		// Course
@@ -110,7 +110,7 @@ class srLearningProgressLookupCourseTableGUI extends ilTable2GUI {
 
     /**
      * @return array
-     * @throws \srag\DIC\Exception\DICException
+     * @throws \srag\DIC\LearningProgressLookup\Exception\DICException
      */
     public function getTableColumns() {
 		$cols = array();
@@ -137,7 +137,7 @@ class srLearningProgressLookupCourseTableGUI extends ilTable2GUI {
 
 
     /**
-     * @throws \srag\DIC\Exception\DICException
+     * @throws \srag\DIC\LearningProgressLookup\Exception\DICException
      */
     private function addColumns() {
 		foreach ($this->getTableColumns() as $k => $v) {

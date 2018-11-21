@@ -1,15 +1,16 @@
 <?php
 
-namespace srag\DIC;
+namespace srag\DIC\LearningProgressLookup;
 
-use srag\DIC\DIC\DICInterface;
-use srag\DIC\Exception\DICException;
-use srag\DIC\Plugin\PluginInterface;
+use srag\DIC\LearningProgressLookup\DIC\DICInterface;
+use srag\DIC\LearningProgressLookup\Exception\DICException;
+use srag\DIC\LearningProgressLookup\Plugin\PluginInterface;
+use srag\DIC\LearningProgressLookup\Version\VersionInterface;
 
 /**
  * Trait DICTrait
  *
- * @package srag\DIC
+ * @package srag\DIC\LearningProgressLookup
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
@@ -47,6 +48,16 @@ trait DICTrait {
 		self::checkPluginClassNameConst();
 
 		return DICStatic::plugin(static::PLUGIN_CLASS_NAME);
+	}
+
+
+	/**
+	 * Get version interface
+	 *
+	 * @return VersionInterface Version interface
+	 */
+	protected static final function version()/*: VersionInterface*/ {
+		return DICStatic::version();
 	}
 
 

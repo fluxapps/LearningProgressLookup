@@ -1,5 +1,5 @@
 <?php
-use srag\DIC\DICTrait;
+use srag\DIC\LearningProgressLookup\DICTrait;
 
 /**
  * Class srLearningProgressCourseModel

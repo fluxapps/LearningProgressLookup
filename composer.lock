@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2de283855250b8713ad3d6095e17d67b",
+    "content-hash": "6d542072a20151b99d5b82e84b686be8",
     "packages": [
         {
             "name": "srag/dic",
-            "version": "0.8.11",
+            "version": "v0.10.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/DIC.git",
-                "reference": "6b0810095546c8aefb41151c249347981f2ed80b"
+                "reference": "7b4208ac5d0733e13d443099aac45dd89cf14b29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/6b0810095546c8aefb41151c249347981f2ed80b",
-                "reference": "6b0810095546c8aefb41151c249347981f2ed80b",
+                "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/7b4208ac5d0733e13d443099aac45dd89cf14b29",
+                "reference": "7b4208ac5d0733e13d443099aac45dd89cf14b29",
                 "shasum": ""
             },
             "require": {
@@ -49,7 +49,50 @@
                 "globals",
                 "trait"
             ],
-            "time": "2018-09-18T08:30:39+00:00"
+            "time": "2018-10-15T12:09:44+00:00"
+        },
+        {
+            "name": "srag/librariesnamespacechanger",
+            "version": "v0.3.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/studer-raimann/LibrariesNamespaceChanger.git",
+                "reference": "cf5f3be4341270fbe46a977bbd1403d744fb797a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/cf5f3be4341270fbe46a977bbd1403d744fb797a",
+                "reference": "cf5f3be4341270fbe46a977bbd1403d744fb797a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "srag\\LibrariesNamespaceChanger\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "studer + raimann ag - Team Custom 1",
+                    "email": "support-custom1@studer-raimann.ch",
+                    "homepage": "https://studer-raimann.ch",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Change namespace of libraries to plugin namespace",
+            "homepage": "https://github.com/studer-raimann/LibrariesNamespaceChanger",
+            "keywords": [
+                "ILIAS",
+                "libraries"
+            ],
+            "time": "2018-11-21T08:31:42+00:00"
         }
     ],
     "packages-dev": [],

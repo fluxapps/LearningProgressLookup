@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . "/../vendor/autoload.php";
-use srag\DIC\DICTrait;
+use srag\DIC\LearningProgressLookup\DICTrait;
 
 /**
  * Class ilLearningProgressLookupConfigGUI
@@ -49,7 +49,7 @@ class ilLearningProgressLookupConfigGUI extends ilPluginConfigGUI {
 		$config_form_gui = $this->initForm();
 		$config_form_gui->fillForm();
 
-		self::dic()->template()->setContent($config_form_gui->getHTML());
+		self::dic()->ui()->mainTemplate()->setContent($config_form_gui->getHTML());
 	}
 
 
@@ -70,7 +70,7 @@ class ilLearningProgressLookupConfigGUI extends ilPluginConfigGUI {
 
 
     /**
-     * @throws \srag\DIC\Exception\DICException
+     * @throws \srag\DIC\LearningProgressLookup\Exception\DICException
      */
     protected function save() {
 		$config_form_gui = $this->initForm();
@@ -82,7 +82,7 @@ class ilLearningProgressLookupConfigGUI extends ilPluginConfigGUI {
 			ilUtil::sendFailure(self::plugin()->translate("message_saved_failed_config"));
 		}
 
-		self::dic()->template()->setContent($config_form_gui->getHTML());
+		self::dic()->ui()->mainTemplate()->setContent($config_form_gui->getHTML());
 	}
 }
 

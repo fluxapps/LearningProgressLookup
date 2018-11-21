@@ -1,14 +1,14 @@
 <?php
 
-namespace srag\DIC\DIC;
+namespace srag\DIC\LearningProgressLookup\DIC;
 
 use ilLoggerFactory;
-use srag\DIC\Exception\DICException;
+use srag\DIC\LearningProgressLookup\Exception\DICException;
 
 /**
  * Class LegacyDIC
  *
- * @package srag\DIC\DIC
+ * @package srag\DIC\LearningProgressLookup\DIC
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
@@ -229,8 +229,24 @@ final class LegacyDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
+	public function mailMimeTransportFactory()/*: ilMailMimeTransportFactory*/ {
+		throw new DICException("ilMailMimeTransportFactory not exists in ILIAS 5.2 or below!");
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
 	public function mainMenu()/*: ilMainMenuGUI*/ {
 		return $this->globals["ilMainMenu"];
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function mainTemplate()/*: ilTemplate*/ {
+		return $this->globals["tpl"];
 	}
 
 
@@ -311,14 +327,6 @@ final class LegacyDIC extends AbstractDIC {
 	 */
 	public function tabs()/*: ilTabsGUI*/ {
 		return $this->globals["ilTabs"];
-	}
-
-
-	/**
-	 * @inheritdoc
-	 */
-	public function template()/*: ilTemplate*/ {
-		return $this->globals["tpl"];
 	}
 
 
