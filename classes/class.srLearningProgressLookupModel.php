@@ -1,8 +1,5 @@
 <?php
-
-require_once('./Services/Tracking/classes/collection/class.ilLPCollectionOfRepositoryObjects.php');
-require_once('./Services/Tracking/classes/class.ilLearningProgressBaseGUI.php');
-require_once('./Services/Tracking/classes/class.ilLPObjSettings.php');
+use srag\DIC\LearningProgressLookup\DICTrait;
 
 /**
  * Class srLearningProgressCourseModel
@@ -14,6 +11,10 @@ require_once('./Services/Tracking/classes/class.ilLPObjSettings.php');
  */
 class srLearningProgressLookupModel {
 
+    use DICTrait;
+
+    const PLUGIN_CLASS_NAME = ilLearningProgressLookupPlugin::class;
+
 	static $module_cache = array();
 
 
@@ -22,8 +23,6 @@ class srLearningProgressLookupModel {
 	 * @return array|int
 	 */
 	public static function getCourses(array $options = array()) {
-		global $ilDB, $rbacsystem;
-
 		$options = self::mergeDefaultOptions($options);
 
 		// TODO: for better performance it would be good to pack the "edit_learning_progress" access check into the query (using rbac_pa)
@@ -51,12 +50,12 @@ class srLearningProgressLookupModel {
 		$sql .= self::parseWhereQuery($options['filters']);
 		$sql .= self::parseDefaultQueryOptions($options);
 
-		$result = $ilDB->query($sql);
+		$result = self::dic()->database()->query($sql);
 		$data = array();
 
-		while ($rec = $ilDB->fetchAssoc($result)) {
+		while ($rec = self::dic()->database()->fetchAssoc($result)) {
 			// only display, when user has edit_learning_progress right!
-			if ($rbacsystem->checkAccess("edit_learning_progress", $rec['ref_id'])) {
+			if (self::dic()->rbacsystem()->checkAccess("edit_learning_progress", $rec['ref_id'])) {
 				$data[] = $rec;
 			}
 		}
@@ -75,8 +74,6 @@ class srLearningProgressLookupModel {
 	 * @return array
 	 */
 	public static function getCourseUsers($course_ref_id, array $options = array()) {
-		global $ilDB;
-
 		$options = self::mergeDefaultOptions($options);
 
 		if ($options['count']) {
@@ -85,12 +82,12 @@ class srLearningProgressLookupModel {
 			$sql = 'SELECT usr_id, login, firstname, lastname, last_login ';
 		}
 
-		$sql .= "FROM usr_data WHERE usr_data.usr_id <> " . ANONYMOUS_USER_ID . " " . "AND usr_data.usr_id IN (SELECT DISTINCT ud.usr_id "
+		$sql .= " FROM usr_data WHERE usr_data.usr_id <> " . ANONYMOUS_USER_ID . " " . " AND usr_data.usr_id IN (SELECT DISTINCT ud.usr_id "
 		        . "FROM usr_data ud join rbac_ua ON (ud.usr_id = rbac_ua.usr_id) " . "JOIN object_data od ON (rbac_ua.rol_id = od.obj_id) "
-		        . "WHERE od.title LIKE 'il_crs_%_" . $ilDB->quote($course_ref_id) . "') ";
+		        . "WHERE od.title LIKE 'il_crs_%_" . self::dic()->database()->quote($course_ref_id, 'integer') . "') ";
 
 		if ($options['count']) {
-			$sql .= "GROUP BY usr_id";
+			$sql .= " GROUP BY usr_id ";
 		}
 
 		if (strpos($options['filters']['login'], ',') !== false) {
@@ -101,15 +98,15 @@ class srLearningProgressLookupModel {
 		$sql .= self::parseWhereQuery($options['filters'], array( 'login' ));
 		$sql .= self::parseDefaultQueryOptions($options);
 
-		$result = $ilDB->query($sql);
+		$result = self::dic()->database()->query($sql);
 		if ($options['count']) {
-			$rec = $ilDB->fetchAssoc($result);
+			$rec = self::dic()->database()->fetchAssoc($result);
 
 			return $rec['count'];
 		} else {
 			$data = array();
 
-			while ($rec = $ilDB->fetchAssoc($result)) {
+			while ($rec = self::dic()->database()->fetchAssoc($result)) {
 				$data[$rec['usr_id']] = $rec;
 			}
 
@@ -125,19 +122,17 @@ class srLearningProgressLookupModel {
 	 * @return array
 	 */
 	public static function getUserProgresses($course_ref_id, array $user_ids = array(), array $options = array()) {
-		global $ilDB;
-
 		$options = self::mergeDefaultOptions($options);
 
 		$modules = self::getCourseModules($course_ref_id, $options);
 		$module_obj_ids = array_map(function ($ar) { return $ar['obj_id']; }, $modules);
 
 		$sql = "SELECT usr_id, obj_id, status FROM ut_lp_marks
-				WHERE " . $ilDB->in("obj_id", $module_obj_ids, false, "integer") . " AND " . $ilDB->in("usr_id", $user_ids, false, "integer");
+				WHERE " . self::dic()->database()->in("obj_id", $module_obj_ids, false, "integer") . " AND " . self::dic()->database()->in("usr_id", $user_ids, false, "integer");
 
-		$set = $ilDB->query($sql);
+		$set = self::dic()->database()->query($sql);
 		$res = array();
-		while ($rec = $ilDB->fetchAssoc($set)) {
+		while ($rec = self::dic()->database()->fetchAssoc($set)) {
 			$res[$rec['usr_id']][$rec['obj_id']] = $rec;
 		}
 
@@ -151,8 +146,6 @@ class srLearningProgressLookupModel {
 	 * @return mixed
 	 */
 	public static function getCourseModules($course_ref_id, array $options = array()) {
-		global $ilDB, $rbacsystem;
-
 		if (isset(self::$module_cache[$course_ref_id])) {
 			return self::$module_cache[$course_ref_id];
 		}
@@ -184,8 +177,6 @@ class srLearningProgressLookupModel {
 	 * @return array
 	 */
 	public static function findCourseModules($ref_id, $show_offline) {
-		global $rbacsystem;
-
 		$obj_id = ilObject::_lookupObjId($ref_id);
 		$collection = new ilLPCollectionOfRepositoryObjects($obj_id, ilLPObjSettings::LP_MODE_COLLECTION);
 
@@ -216,7 +207,7 @@ class srLearningProgressLookupModel {
 			}
 
 			// check if offline show is enabled and user has lp-other-users right
-			if (!$show_offline && !$online || !$rbacsystem->checkAccess("edit_learning_progress", $object->getRefId())) {
+			if (!$show_offline && !$online || !self::dic()->rbacsystem()->checkAccess("edit_learning_progress", $object->getRefId())) {
 				continue;
 			}
 
@@ -240,7 +231,6 @@ class srLearningProgressLookupModel {
 	 * @return array
 	 */
 	public static function mergeDefaultOptions(array $options, array $defaults = array()) {
-
 		$_options = (count($defaults) > 0) ? $defaults : array(
 			'filters'            => array(),
 			'permission_filters' => array(),
@@ -260,9 +250,7 @@ class srLearningProgressLookupModel {
 	 * @param string $op
 	 * @return string
 	 */
-	public static function parseWhereQuery($filters, $valid_params = false, $first = false, $op = "AND") {
-		global $ilDB;
-
+	public static function parseWhereQuery($filters, $valid_params = false, $first = false, $op = " AND ") {
 		// allow filtering with *
 		$sql = "";
 		foreach ($filters as $key => $value) {
@@ -280,9 +268,9 @@ class srLearningProgressLookupModel {
 						if ($split != null && $split != '') {
 							$other_sql .= ($first) ? '' : ' OR ';
 							if (!is_numeric($split) && !is_array($split)) {
-								$other_sql .= $ilDB->like($key, 'text', "%" . trim(str_replace("*", "%", trim($split)), "%") . "%");
+								$other_sql .= self::dic()->database()->like($key, 'text', "%" . trim(str_replace("*", "%", trim($split)), "%") . "%");
 							} else {
-								$other_sql .= $key . "=" . $ilDB->quote($split, 'text');
+								$other_sql .= $key . "=" . self::dic()->database()->quote($split, 'text');
 							}
 							$first = false;
 						}
@@ -298,9 +286,9 @@ class srLearningProgressLookupModel {
 
 				$sql .= ($first) ? '' : ' ' . $op . ' ';
 				if (!is_numeric($value) && !is_array($value)) {
-					$sql .= $ilDB->like($key, 'text', "%" . trim(str_replace("*", "%", trim($value)), "%") . "%");
+					$sql .= self::dic()->database()->like($key, 'text', "%" . trim(str_replace("*", "%", trim($value)), "%") . "%");
 				} else {
-					$sql .= $key . "=" . $ilDB->quote($value, 'text');
+					$sql .= $key . "=" . self::dic()->database()->quote($value, 'text');
 				}
 				$first = false;
 			}
@@ -333,9 +321,7 @@ class srLearningProgressLookupModel {
 	 * @return string
 	 */
 	public static function getProgressStatusRepresentation($status) {
-		global $lng;
-
-		$lng->loadLanguageModule('trac');
+		self::dic()->language()->loadLanguageModule('trac');
 
 		return ilLearningProgressBaseGUI::_getStatusText($status);
 	}

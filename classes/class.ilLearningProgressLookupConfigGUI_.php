@@ -1,7 +1,6 @@
 <?php
-require_once('./Services/Component/classes/class.ilPluginConfigGUI.php');
-require_once('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/LearningProgressLookup/classes/class.ilLearningProgressLookupPlugin.php');
-require_once('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/LearningProgressLookup/classes/Config/class.srLearningProgressLookupConfigFormGUI.php');
+require_once __DIR__ . "/../vendor/autoload.php";
+use srag\DIC\LearningProgressLookup\DICTrait;
 
 /**
  * Class ilLearningProgressLookupConfigGUI
@@ -10,30 +9,26 @@ require_once('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHoo
  */
 class ilLearningProgressLookupConfigGUI extends ilPluginConfigGUI {
 
+    use DICTrait;
+    
+    const PLUGIN_CLASS_NAME = ilLearningProgressLookupPlugin::class;
+
 	const CMD_DEFAULT = 'index';
 	const CMD_SAVE = 'save';
 	const CMD_CANCEL = 'cancel';
-	/**
-	 * @var ilCtrl
-	 */
-	protected $ctrl;
-	/**
-	 * @var ilTemplate
-	 */
-	protected $tpl;
-	protected $pl;
 
 
-	public function __construct() {
-		global $tpl, $ilCtrl;
-
-		$this->tpl = $tpl;
-		$this->ctrl = $ilCtrl;
-		$this->pl = ilLearningProgressLookupPlugin::getInstance();
+    /**
+     * ilLearningProgressLookupConfigGUI constructor.
+     */
+    public function __construct() {
 	}
 
 
-	public function performCommand($cmd) {
+    /**
+     * @param $cmd
+     */
+    public function performCommand($cmd) {
 		if ($cmd == 'configure') {
 			$cmd = self::CMD_DEFAULT;
 		}
@@ -47,35 +42,47 @@ class ilLearningProgressLookupConfigGUI extends ilPluginConfigGUI {
 	}
 
 
-	public function index() {
+    /**
+     *
+     */
+    public function index() {
 		$config_form_gui = $this->initForm();
 		$config_form_gui->fillForm();
 
-		$this->tpl->setContent($config_form_gui->getHTML());
+		self::dic()->ui()->mainTemplate()->setContent($config_form_gui->getHTML());
 	}
 
 
-	public function cancel() {
-		$this->ctrl->redirect($this, self::CMD_DEFAULT);
+    /**
+     *
+     */
+    public function cancel() {
+		self::dic()->ctrl()->redirect($this, self::CMD_DEFAULT);
 	}
 
 
-	protected function initForm() {
+    /**
+     * @return srLearningProgressLookupConfigFormGUI
+     */
+    protected function initForm() {
 		return new srLearningProgressLookupConfigFormGUI($this);
 	}
 
 
-	protected function save() {
+    /**
+     * @throws \srag\DIC\LearningProgressLookup\Exception\DICException
+     */
+    protected function save() {
 		$config_form_gui = $this->initForm();
 		$config_form_gui->setValuesByPost();
 		if ($config_form_gui->saveObject()) {
-			ilUtil::sendSuccess($this->pl->txt("message_saved_config"), true);
-			$this->ctrl->redirect($this, self::CMD_DEFAULT);
+			ilUtil::sendSuccess(self::plugin()->translate("message_saved_config"), true);
+			self::dic()->ctrl()->redirect($this, self::CMD_DEFAULT);
 		} else {
-			ilUtil::sendFailure($this->pl->txt("message_saved_failed_config"));
+			ilUtil::sendFailure(self::plugin()->translate("message_saved_failed_config"));
 		}
 
-		$this->tpl->setContent($config_form_gui->getHTML());
+		self::dic()->ui()->mainTemplate()->setContent($config_form_gui->getHTML());
 	}
 }
 

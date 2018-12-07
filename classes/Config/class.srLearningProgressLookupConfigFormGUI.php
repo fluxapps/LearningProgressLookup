@@ -1,8 +1,5 @@
 <?php
-require_once('./Services/Form/classes/class.ilPropertyFormGUI.php');
-require_once('./Services/Form/classes/class.ilMultiSelectInputGUI.php');
-require_once('./Services/Form/classes/class.ilRoleAutoCompleteInputGUI.php');
-require_once('class.srLearningProgressLookupConfig.php');
+use srag\DIC\LearningProgressLookup\DICTrait;
 
 /**
  * Class
@@ -11,25 +8,21 @@ require_once('class.srLearningProgressLookupConfig.php');
  */
 class srLearningProgressLookupConfigFormGUI extends ilPropertyFormGUI {
 
-	/**
+    use DICTrait;
+    const PLUGIN_CLASS_NAME = ilLearningProgressLookupPlugin::class;
+
+    /**
 	 * @var
 	 */
 	protected $parent_gui;
-	/**
-	 * @var  ilCtrl
-	 */
-	protected $ctrl;
 
 
 	/**
 	 * @param  $parent_gui
 	 */
 	public function __construct($parent_gui) {
-		global $ilCtrl;
 		$this->parent_gui = $parent_gui;
-		$this->ctrl = $ilCtrl;
-		$this->pl = ilLearningProgressLookupPlugin::getInstance();
-		$this->setFormAction($this->ctrl->getFormAction($this->parent_gui));
+		$this->setFormAction(self::dic()->ctrl()->getFormAction($this->parent_gui));
 		$this->initForm();
 	}
 
@@ -40,12 +33,17 @@ class srLearningProgressLookupConfigFormGUI extends ilPropertyFormGUI {
 	 * @return string
 	 */
 	public function txt($field) {
-		return $this->pl->txt('admin_form_' . $field);
+		return self::plugin()->translate('admin_form_' . $field);
 	}
 
 
-	protected function initForm() {
-		global $rbacreview, $ilUser;
+    /**
+     *
+     */
+    protected function initForm() {
+		global $DIC;
+		$rbacreview = $DIC['rbacreview'];
+		$ilUser = $DIC['ilUser'];
 		/*$this->setTitle($this->txt('title'));
 
 		$se = new ilMultiSelectInputGUI($this->txt('config_allowed_change_roles'), srLearningProgressLookupConfig::F_ADMIN_ROLES);
@@ -57,7 +55,10 @@ class srLearningProgressLookupConfigFormGUI extends ilPropertyFormGUI {
 	}
 
 
-	public function fillForm() {
+    /**
+     *
+     */
+    public function fillForm() {
 		$array = array();
 		foreach ($this->getItems() as $item) {
 			$this->getValuesForItem($item, $array);
@@ -137,8 +138,11 @@ class srLearningProgressLookupConfigFormGUI extends ilPropertyFormGUI {
 	}
 
 
-	protected function addCommandButtons() {
-		$this->addCommandButton('save', $this->pl->txt('admin_form_button_save'));
-		$this->addCommandButton('cancel', $this->pl->txt('admin_form_button_cancel'));
+    /**
+     * @throws \srag\DIC\LearningProgressLookup\Exception\DICException
+     */
+    protected function addCommandButtons() {
+		$this->addCommandButton('save', self::plugin()->translate('admin_form_button_save'));
+		$this->addCommandButton('cancel', self::plugin()->translate('admin_form_button_cancel'));
 	}
 }

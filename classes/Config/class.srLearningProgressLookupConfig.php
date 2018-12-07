@@ -1,13 +1,13 @@
 <?php
 
-require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/LearningProgressLookup/classes/Config/class.srLearningProgressLookupConfigFormGUI.php");
-
 /**
  * Class srConfiguration
  */
 class srLearningProgressLookupConfig extends ActiveRecord {
 
 	//const F_ADMIN_ROLES = 'admin_roles';
+
+    const DB_TABLE = 'sr_lpl_config';
 
 	/**
 	 * @var array
@@ -23,8 +23,11 @@ class srLearningProgressLookupConfig extends ActiveRecord {
 	protected $ar_safe_read = false;
 
 
-	public static function returnDbTableName() {
-		return 'sr_lpl_config';
+    /**
+     * @return string
+     */
+    public static function returnDbTableName() {
+		return self::DB_TABLE;
 	}
 
 

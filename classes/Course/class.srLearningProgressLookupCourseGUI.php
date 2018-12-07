@@ -1,8 +1,5 @@
 <?php
-
-require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/LearningProgressLookup/classes/class.ilLearningProgressLookupPlugin.php");
-require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/LearningProgressLookup/classes/Course/class.srLearningProgressLookupCourseTableGUI.php");
-require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/LearningProgressLookup/classes/class.srLearningProgressLookupModel.php");
+use srag\DIC\LearningProgressLookup\DICTrait;
 
 /**
  * GUI-Class Table srLearningProgressLookupCourseGUI
@@ -13,41 +10,34 @@ require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHoo
  */
 class srLearningProgressLookupCourseGUI {
 
+    use DICTrait;
+    const PLUGIN_CLASS_NAME = ilLearningProgressLookupPlugin::class;
+
+
 	const CMD_DEFAULT = 'index';
 	const CMD_RESET_FILTER = 'resetFilter';
 	const CMD_APPLY_FILTER = 'applyFilter';
+
 	/**
 	 * @var  ilTable2GUI
 	 */
 	protected $table;
-	protected $tpl;
-	protected $ctrl;
-	protected $pl;
-	protected $toolbar;
-	protected $tabs;
-	protected $access;
 
 
-	function __construct() {
-		global $tpl, $ilCtrl, $ilAccess, $lng, $ilToolbar, $ilTabs;
-		/**
-		 * @var ilTemplate $tpl
-		 * @var ilCtrl $ilCtrl
-		 * @var ilAccessHandler $ilAccess
-		 */
-		$this->pl = ilLearningProgressLookupPlugin::getInstance();
-		$this->tpl = $tpl;
-		$this->ctrl = $ilCtrl;
-		$this->toolbar = $ilToolbar;
-		$this->tabs = $ilTabs;
-		$this->access = $this->pl->getAccessManager();
-
-		$this->tpl->setTitle($this->pl->txt('plugin_title'));
+    /**
+     * srLearningProgressLookupCourseGUI constructor.
+     */
+    function __construct() {
+		self::dic()->ui()->mainTemplate()->setTitle(self::plugin()->translate('plugin_title'));
 	}
 
 
-	protected function checkAccessOrFail() {
-		if ($this->access->hasCurrentUserViewPermission()) {
+    /**
+     * @return bool
+     * @throws ilException
+     */
+    protected function checkAccessOrFail() {
+		if (self::plugin()->getPluginObject()->getAccessManager()->hasCurrentUserViewPermission()) {
 			return true;
 		}
 
@@ -55,13 +45,16 @@ class srLearningProgressLookupCourseGUI {
 	}
 
 
-	public function executeCommand() {
-		$cmd = $this->ctrl->getCmd();
+    /**
+     * @throws ilException
+     */
+    public function executeCommand() {
+		$cmd = self::dic()->ctrl()->getCmd();
 
 		$this->checkAccessOrFail();
 
-		$this->tpl->getStandardTemplate();
-		//$this->tabs->addTab("course_gui", $this->pl->txt('title_search_course'), $this->ctrl->getLinkTarget($this));
+		self::dic()->ui()->mainTemplate()->getStandardTemplate();
+		//self::dic()->tabs()->addTab("course_gui", self::plugin()->translate('title_search_course'), self::dic()->ctrl()->getLinkTarget($this));
 
 		switch ($cmd) {
 			case self::CMD_RESET_FILTER:
@@ -76,17 +69,22 @@ class srLearningProgressLookupCourseGUI {
 		$content = $this->table->getHTML();
 		$content .= '<div class="lookup_legend">' . $this->__getLegendHTML() . '</div>';
 
-		$this->tpl->setContent($content);
+		self::dic()->ui()->mainTemplate()->setContent($content);
 	}
 
 
-	public function index() {
+    /**
+     *
+     */
+    public function index() {
 		$this->table = new srLearningProgressLookupCourseTableGUI($this);
-		$this->tpl->setContent($this->table->getHTML());
 	}
 
 
-	public function applyFilter() {
+    /**
+     *
+     */
+    public function applyFilter() {
 		$this->table = new srLearningProgressLookupCourseTableGUI($this, self::CMD_APPLY_FILTER);
 		$this->table->writeFilterToSession();
 		$this->table->resetOffset();
@@ -94,7 +92,10 @@ class srLearningProgressLookupCourseGUI {
 	}
 
 
-	public function resetFilter() {
+    /**
+     *
+     */
+    public function resetFilter() {
 		$this->table = new srLearningProgressLookupCourseTableGUI($this, self::CMD_RESET_FILTER);
 		$this->table->resetOffset();
 		$this->table->resetFilter();
@@ -102,17 +103,24 @@ class srLearningProgressLookupCourseGUI {
 	}
 
 
-	public function cancel() {
-		$this->ctrl->redirect($this);
+    /**
+     *
+     */
+    public function cancel() {
+		self::dic()->ctrl()->redirect($this);
 	}
 
 
-	public function __getLegendHTML() {
+    /**
+     * @return string
+     * @throws ilTemplateException
+     */
+    public function __getLegendHTML() {
 		$tpl = new ilTemplate("tpl.offline_legend.html", true, true, "./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/LearningProgressLookup");
 		$tpl->setVariable("IMG_COMPLETED", ilUtil::getImagePath("scorm/completed.svg"));
 		$tpl->setVariable("IMG_FAILED", ilUtil::getImagePath("scorm/failed.svg"));
-		$tpl->setVariable("TXT_COMPLETED", $this->pl->txt("online_status_1"));
-		$tpl->setVariable("TXT_FAILED", $this->pl->txt("online_status_0"));
+		$tpl->setVariable("TXT_COMPLETED", self::plugin()->translate("online_status_1"));
+		$tpl->setVariable("TXT_FAILED", self::plugin()->translate("online_status_0"));
 
 		return $tpl->get();
 	}

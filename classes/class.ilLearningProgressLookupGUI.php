@@ -1,8 +1,6 @@
 <?php
-require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/LearningProgressLookup/classes/class.ilLearningProgressLookupPlugin.php");
-
-require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/LearningProgressLookup/classes/Course/class.srLearningProgressLookupCourseGUI.php");
-require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/LearningProgressLookup/classes/Status/class.srLearningProgressLookupStatusGUI.php");
+require_once __DIR__ . "/../vendor/autoload.php";
+use srag\DIC\LearningProgressLookup\DICTrait;
 
 /**
  * GUI-Class ilLearningProgressLookupGUI
@@ -16,41 +14,37 @@ require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHoo
  */
 class ilLearningProgressLookupGUI {
 
+    use DICTrait;
+    
+    const PLUGIN_CLASS_NAME = ilLearningProgressLookupPlugin::class;
+
 	const RELOAD_LANGUAGES = false;
-	protected $tpl;
-	protected $ctrl;
-	protected $tabs;
-	protected $lng;
-	protected $access;
 
 
-	public function __construct() {
-		global $tpl, $ilCtrl, $ilTabs, $lng;
-		/**
-		 * @var $tpl    ilTemplate
-		 * @var $ilCtrl ilCtrl
-		 * @var $ilTabs ilTabsGUI
-		 */
-		$this->tpl = $tpl;
-		$this->pl = ilLearningProgressLookupPlugin::getInstance();
-		$this->ctrl = $ilCtrl;
-		$this->tabs = $ilTabs;
-		$this->lng = $lng;
-		$this->access = $this->pl->getAccessManager();
+    /**
+     * ilLearningProgressLookupGUI constructor.
+     * @throws \srag\DIC\LearningProgressLookup\Exception\DICException
+     */
+    public function __construct() {
 		if (self::RELOAD_LANGUAGES OR $_GET['rl'] == 'true') {
-			$this->pl->updateLanguages();
+			self::plugin()->getPluginObject()->updateLanguages();
 		}
 	}
 
 
-	public function executeCommand() {
-		$cmd = $this->ctrl->getCmd();
-		$this->tpl->getStandardTemplate();
-		$this->tpl->addCss($this->pl->getStyleSheetLocation("default/learning_progress_lookup.css"));
+    /**
+     * @return bool
+     * @throws \srag\DIC\LearningProgressLookup\Exception\DICException
+     * @throws ilCtrlException
+     * @throws ilException
+     */
+    public function executeCommand() {
+		self::dic()->ui()->mainTemplate()->getStandardTemplate();
+		self::dic()->ui()->mainTemplate()->addCss(self::plugin()->getPluginObject()->getStyleSheetLocation("default/learning_progress_lookup.css"));
 
-		$next_class = $this->ctrl->getNextClass($this);
+		$next_class = self::dic()->ctrl()->getNextClass($this);
 		if (!$this->accessCheck($next_class)) {
-			ilUtil::sendFailure($this->lng->txt("no_permission"), true);
+			ilUtil::sendFailure(self::dic()->language()->txt("no_permission"), true);
 			ilUtil::redirect("");
 
 			return false;
@@ -60,31 +54,36 @@ class ilLearningProgressLookupGUI {
 			case '':
 			case 'srlearningprogresslookupcoursegui':
 				$gui = new srLearningProgressLookupCourseGUI();
-				$this->ctrl->forwardCommand($gui);
+				self::dic()->ctrl()->forwardCommand($gui);
 				break;
 			case 'srlearningprogresslookupstatusgui':
 				$gui = new srLearningProgressLookupStatusGUI();
-				$this->ctrl->forwardCommand($gui);
+				self::dic()->ctrl()->forwardCommand($gui);
 				break;
 			default:
-				require_once($this->ctrl->lookupClassPath($next_class));
+				require_once(self::dic()->ctrl()->lookupClassPath($next_class));
 				$gui = new $next_class();
-				$this->ctrl->forwardCommand($gui);
+				self::dic()->ctrl()->forwardCommand($gui);
 				break;
 		}
 
-		$this->tpl->show();
+		self::dic()->ui()->mainTemplate()->show();
 
 		return true;
 	}
 
 
-	protected function accessCheck($next_class) {
+    /**
+     * @param $next_class
+     * @return bool
+     * @throws \srag\DIC\LearningProgressLookup\Exception\DICException
+     */
+    protected function accessCheck($next_class) {
 		switch ($next_class) {
 			case '':
 			case 'srlearningprogresslookupcoursegui':
 			case 'srlearningprogresslookupstatusgui':
-				return $this->access->hasCurrentUserViewPermission();
+				return self::plugin()->getPluginObject()->getAccessManager()->hasCurrentUserViewPermission();
 				break;
 		}
 

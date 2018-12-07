@@ -1,7 +1,7 @@
 <?php
 /* Copyright (c) 1998-2010 ILIAS open source, Extended GPL, see docs/LICENSE */
-require_once('./Services/UIComponent/classes/class.ilUIHookPluginGUI.php');
-require_once('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/LearningProgressLookup/classes/class.ilLearningProgressLookupPlugin.php');
+require_once __DIR__ . "/../vendor/autoload.php";
+use srag\DIC\LearningProgressLookup\DICTrait;
 
 /**
  * Class ilLearningProgressLookupUIHookGUI
@@ -11,6 +11,10 @@ require_once('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHoo
  */
 class ilLearningProgressLookupUIHookGUI extends ilUIHookPluginGUI {
 
+    use DICTrait;
+
+    const PLUGIN_CLASS_NAME = ilLearningProgressLookupPlugin::class;
+
 	/**
 	 * @param       $a_comp
 	 * @param       $a_part
@@ -18,7 +22,10 @@ class ilLearningProgressLookupUIHookGUI extends ilUIHookPluginGUI {
 	 *
 	 */
 	/*function modifyGUI($a_comp, $a_part, $a_par = array()) {
-		global $ilAccess, $ilTabs, $ilCtrl;
+		global $DIC;
+		$ilAccess = $DIC['ilAccess'];
+		$ilTabs = $DIC['ilTabs'];
+		$ilCtrl = $DIC['ilCtrl'];
 
 		if ($a_part == 'tabs') {
 			if (ilObject::_lookupType($_GET['ref_id'], true) == 'crs' AND $ilAccess->checkAccess("write", "write", $_GET['ref_id'])
