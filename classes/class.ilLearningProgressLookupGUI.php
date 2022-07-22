@@ -39,7 +39,7 @@ class ilLearningProgressLookupGUI {
      * @throws ilException
      */
     public function executeCommand() {
-		self::dic()->ui()->mainTemplate()->getStandardTemplate();
+		self::dic()->ui()->mainTemplate()->loadStandardTemplate();
 		self::dic()->ui()->mainTemplate()->addCss(self::plugin()->getPluginObject()->getStyleSheetLocation("default/learning_progress_lookup.css"));
 
 		$next_class = self::dic()->ctrl()->getNextClass($this);
@@ -67,7 +67,7 @@ class ilLearningProgressLookupGUI {
 				break;
 		}
 
-		self::dic()->ui()->mainTemplate()->show();
+		self::dic()->ui()->mainTemplate()->printToStdout();
 
 		return true;
 	}

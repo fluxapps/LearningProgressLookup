@@ -53,7 +53,7 @@ class srLearningProgressLookupCourseGUI {
 
 		$this->checkAccessOrFail();
 
-		self::dic()->ui()->mainTemplate()->getStandardTemplate();
+		self::dic()->ui()->mainTemplate()->loadStandardTemplate();
 		//self::dic()->tabs()->addTab("course_gui", self::plugin()->translate('title_search_course'), self::dic()->ctrl()->getLinkTarget($this));
 
 		switch ($cmd) {
