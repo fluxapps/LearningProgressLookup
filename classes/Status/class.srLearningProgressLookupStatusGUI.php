@@ -62,7 +62,7 @@ class srLearningProgressLookupStatusGUI {
 
 		self::dic()->ctrl()->saveParameter($this, 'course_ref_id');
 
-		self::dic()->ui()->mainTemplate()->getStandardTemplate();
+		self::dic()->ui()->mainTemplate()->loadStandardTemplate();
 
 		self::dic()->tabs()->clearTargets();
 		self::dic()->tabs()->tabs = null;
@@ -86,7 +86,7 @@ class srLearningProgressLookupStatusGUI {
 
 		// display legend
 		self::dic()->language()->loadLanguageModule('trac');
-		$content .= '<div class="lookup_legend">' . ilLearningProgressBaseGUI::__getLegendHTML() . '</div>';
+		$content .= '<div class="lookup_legend">' . (new ilLearningProgressBaseGUI(0))->__getLegendHTML() . '</div>';
 
 		self::dic()->ui()->mainTemplate()->setContent($content);
 	}

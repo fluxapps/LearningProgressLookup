@@ -1,6 +1,6 @@
 {
   "support": {
-    "email": "info@studer-raimann.ch"
+    "email": "support@fluxlabs.ch"
   },
   "minimum-stability": "beta",
   "prefer-stable": true,
@@ -10,15 +10,11 @@
     "srag/librariesnamespacechanger": ">=0.1.0"
   },
   "autoload": {
+    "psr-4": {
+      "srag\\Plugins\\LearningProgressLookup\\": "src/"
+    },
     "classmap": [
-      "./classes/",
-      "../../../../../../../Services/Form",
-      "../../../../../../../Services/Object",
-      "../../../../../../../Services/Table",
-      "../../../../../../../Services/Tracking",
-      "../../../../../../../Services/Component",
-      "../../../../../../../Services/UIComponent",
-      "../../../../../../../Services/ActiveRecord"
+      "./classes/"
     ]
   },
   "config": {

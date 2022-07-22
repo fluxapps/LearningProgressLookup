@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . "/../vendor/autoload.php";
+use ILIAS\GlobalScreen\Scope\MainMenu\Provider\AbstractStaticPluginMainMenuProvider;
 use srag\DIC\LearningProgressLookup\DICTrait;
+use srag\Plugins\LearningProgressLookup\Menu\Menu;
 
 /**
  * ilLearningProgressLookupPlugin
@@ -152,6 +154,12 @@ class ilLearningProgressLookupPlugin extends ilUserInterfaceHookPlugin {
 		var_dump($output);
 		var_dump($exit);
 	} */
+
+
+	public function promoteGlobalScreenProvider() : AbstractStaticPluginMainMenuProvider
+	{
+		return new Menu(self::dic()->dic(), $this);
+	}
 }
 
 ?>
