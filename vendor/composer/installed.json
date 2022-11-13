@@ -1,94 +1,100 @@
-[
-    {
-        "name": "srag/dic",
-        "version": "v0.10.3",
-        "version_normalized": "0.10.3.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/studer-raimann/DIC.git",
-            "reference": "7b4208ac5d0733e13d443099aac45dd89cf14b29"
+{
+    "packages": [
+        {
+            "name": "srag/dic",
+            "version": "v0.10.3",
+            "version_normalized": "0.10.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/studer-raimann/DIC.git",
+                "reference": "7b4208ac5d0733e13d443099aac45dd89cf14b29"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/7b4208ac5d0733e13d443099aac45dd89cf14b29",
+                "reference": "7b4208ac5d0733e13d443099aac45dd89cf14b29",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "time": "2018-10-15T12:09:44+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "srag\\DIC\\LearningProgressLookup\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "studer + raimann ag - Team Custom 1",
+                    "email": "support-custom1@studer-raimann.ch",
+                    "homepage": "https://studer-raimann.ch",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Use all ILIAS globals in your class",
+            "homepage": "https://github.com/studer-raimann/DIC",
+            "keywords": [
+                "ILIAS",
+                "dic",
+                "globals",
+                "trait"
+            ],
+            "install-path": "../srag/dic"
         },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/7b4208ac5d0733e13d443099aac45dd89cf14b29",
-            "reference": "7b4208ac5d0733e13d443099aac45dd89cf14b29",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.6"
-        },
-        "time": "2018-10-15T12:09:44+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "srag\\DIC\\LearningProgressLookup\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "GPL-3.0-only"
-        ],
-        "authors": [
-            {
-                "name": "studer + raimann ag - Team Custom 1",
-                "email": "support-custom1@studer-raimann.ch",
-                "homepage": "https://studer-raimann.ch",
-                "role": "Developer"
-            }
-        ],
-        "description": "Use all ILIAS globals in your class",
-        "homepage": "https://github.com/studer-raimann/DIC",
-        "keywords": [
-            "ILIAS",
-            "dic",
-            "globals",
-            "trait"
-        ]
-    },
-    {
-        "name": "srag/librariesnamespacechanger",
-        "version": "v0.3.6",
-        "version_normalized": "0.3.6.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/studer-raimann/LibrariesNamespaceChanger.git",
-            "reference": "cf5f3be4341270fbe46a977bbd1403d744fb797a"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/cf5f3be4341270fbe46a977bbd1403d744fb797a",
-            "reference": "cf5f3be4341270fbe46a977bbd1403d744fb797a",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.6"
-        },
-        "time": "2018-11-21T08:31:42+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "srag\\LibrariesNamespaceChanger\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "GPL-3.0-only"
-        ],
-        "authors": [
-            {
-                "name": "studer + raimann ag - Team Custom 1",
-                "email": "support-custom1@studer-raimann.ch",
-                "homepage": "https://studer-raimann.ch",
-                "role": "Developer"
-            }
-        ],
-        "description": "Change namespace of libraries to plugin namespace",
-        "homepage": "https://github.com/studer-raimann/LibrariesNamespaceChanger",
-        "keywords": [
-            "ILIAS",
-            "libraries"
-        ]
-    }
-]
+        {
+            "name": "srag/librariesnamespacechanger",
+            "version": "v0.3.6",
+            "version_normalized": "0.3.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/studer-raimann/LibrariesNamespaceChanger.git",
+                "reference": "cf5f3be4341270fbe46a977bbd1403d744fb797a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/studer-raimann/LibrariesNamespaceChanger/zipball/cf5f3be4341270fbe46a977bbd1403d744fb797a",
+                "reference": "cf5f3be4341270fbe46a977bbd1403d744fb797a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "time": "2018-11-21T08:31:42+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "srag\\LibrariesNamespaceChanger\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "studer + raimann ag - Team Custom 1",
+                    "email": "support-custom1@studer-raimann.ch",
+                    "homepage": "https://studer-raimann.ch",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Change namespace of libraries to plugin namespace",
+            "homepage": "https://github.com/studer-raimann/LibrariesNamespaceChanger",
+            "keywords": [
+                "ILIAS",
+                "libraries"
+            ],
+            "install-path": "../srag/librariesnamespacechanger"
+        }
+    ],
+    "dev": true,
+    "dev-package-names": []
+}
